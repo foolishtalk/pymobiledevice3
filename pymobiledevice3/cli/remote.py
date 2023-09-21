@@ -87,9 +87,10 @@ async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, sec
             print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
                   click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
 
-            # while True:
+            while True:
                 # wait user input while the asyncio tasks execute
-                # await asyncio.sleep(.5)
+                #需要保留连接才能修改定位
+                await asyncio.sleep(.5)
 
 
 @remote_cli.command('start-quic-tunnel')

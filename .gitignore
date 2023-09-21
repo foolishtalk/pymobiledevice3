@@ -7,3 +7,6 @@ version.txt
 debug/
 *.pyc
 *.egg-info/
+package/__main__.spec
+package/dist
+package/build

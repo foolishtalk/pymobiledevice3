@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-RESOURCES = Path(__file__).parent.parent.parent / 'resources' / 'webinspector'
+RESOURCES = Path(__file__).parent.parent.parent.parent / 'resources' / 'webinspector'
 FIND_NODES = (RESOURCES / 'find_nodes.js').read_text()
 
 

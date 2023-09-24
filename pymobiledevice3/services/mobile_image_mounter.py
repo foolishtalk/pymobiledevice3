@@ -9,7 +9,7 @@ from packaging.version import Version
 from pymobiledevice3.common import get_home_folder
 from pymobiledevice3.exceptions import AlreadyMountedError, DeveloperDiskImageNotFoundError, \
     DeveloperModeIsNotEnabledError, InternalError, MessageNotSupportedError, MissingManifestError, NotMountedError, \
-    PyMobileDevice3Exception, UnsupportedCommandError
+    PyMobileDevice3Exception, UnsupportedCommandError, NotFoundImageError
 from pymobiledevice3.lockdown import LockdownClient
 from pymobiledevice3.lockdown_service_provider import LockdownServiceProvider
 from pymobiledevice3.restore.tss import TSSRequest
@@ -327,28 +327,21 @@ def auto_mount_developer(lockdown: LockdownClient, xcode: str = None, version: s
     image_mounter.mount(image_path, signature)
 
 
-def auto_mount_personalized(lockdown: LockdownClient) -> None:
-    local_path = get_home_folder() / 'Xcode_iOS_DDI_Personalized'
-    local_path.mkdir(parents=True, exist_ok=True)
-
+def auto_mount_personalized(lockdown: LockdownClient,path: str) -> None:
+    # local_path = get_home_folder() / 'Xcode_iOS_DDI_Personalized'
+    # local_path.mkdir(parents=True, exist_ok=True)
+    local_path = Path(path)
     image = local_path / 'Image.dmg'
     build_manifest = local_path / 'BuildManifest.plist'
     trustcache = local_path / 'Image.trustcache'
-
     if not image.exists():
-        # download the Personalized image from our repository
-        repo = DeveloperDiskImageRepository.create()
-        personalized_image = repo.get_personalized_disk_image()
-
-        image.write_bytes(personalized_image.image)
-        build_manifest.write_bytes(personalized_image.build_manifest)
-        trustcache.write_bytes(personalized_image.trustcache)
+        raise NotFoundImageError()
 
     PersonalizedImageMounter(lockdown=lockdown).mount(image, build_manifest, trustcache)
 
 
-def auto_mount(lockdown: LockdownClient, xcode: str = None, version: str = None) -> None:
+def auto_mount(lockdown: LockdownClient, path: str = None, xcode: str = None, version: str = None) -> None:
     if Version(lockdown.product_version) < Version('17.0'):
         auto_mount_developer(lockdown, xcode=xcode, version=version)
     else:
-        auto_mount_personalized(lockdown)
+        auto_mount_personalized(lockdown,path)

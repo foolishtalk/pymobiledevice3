@@ -1,3 +1,4 @@
+import json
 import logging
 from functools import update_wrapper
 from pathlib import Path
@@ -7,7 +8,7 @@ import click
 
 from pymobiledevice3.cli.cli_common import Command, print_json
 from pymobiledevice3.exceptions import AlreadyMountedError, DeveloperDiskImageNotFoundError, NotMountedError, \
-    UnsupportedCommandError
+    UnsupportedCommandError, NotFoundImageError
 from pymobiledevice3.lockdown import LockdownClient
 from pymobiledevice3.services.mobile_image_mounter import DeveloperDiskImageMounter, MobileImageMounterService, \
     PersonalizedImageMounter, auto_mount
@@ -111,25 +112,62 @@ def mounter_mount_personalized(service_provider: LockdownClient, image: str, tru
 
 
 @mounter.command('auto-mount', cls=Command)
+@click.option('--path', help='the iOS 17 DeveloperDiskImage path')
 @click.option('-x', '--xcode', type=click.Path(exists=True, dir_okay=True, file_okay=False),
               help='Xcode application path used to figure out automatically the DeveloperDiskImage path')
 @click.option('-v', '--version', help='use a different DeveloperDiskImage version from the one retrieved by lockdown'
                                       'connection')
-def mounter_auto_mount(service_provider: LockdownClient, xcode: str, version: str):
+def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, version: str):
     """ auto-detect correct DeveloperDiskImage and mount it """
     try:
-        auto_mount(service_provider, xcode=xcode, version=version)
-        logger.info('DeveloperDiskImage mounted successfully')
+        auto_mount(service_provider, path=path, xcode=xcode, version=version)
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '0',
+                'msg': 'DeveloperDiskImage mounted successfully',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
     except URLError:
-        logger.warning('failed to query DeveloperDiskImage versions')
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '1',
+                'msg': 'failed to query DeveloperDiskImage versions',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
     except DeveloperDiskImageNotFoundError:
-        logger.error('Unable to find the correct DeveloperDiskImage')
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '2',
+                'msg': 'Unable to find the correct DeveloperDiskImage',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
     except AlreadyMountedError:
-        logger.error('DeveloperDiskImage already mounted')
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '3',
+                'msg': 'DeveloperDiskImage already mounted',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
+    except NotFoundImageError:
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '4',
+                'msg': 'DeveloperDiskImage not found',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
     except PermissionError as e:
-        logger.error(
-            f'DeveloperDiskImage could not be saved to Xcode default path ({e.filename}). '
-            f'Please make sure your user has the necessary permissions')
+        data = {'cmd': 'mounter_auto_mount',
+                'UDID': f'{service_provider.udid}',
+                'code': '4',
+                'msg': f'DeveloperDiskImage could not be saved to Xcode default path ({e.filename}).Please make sure your user has the necessary permissions',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
 
 
 @mounter.command('query-developer-mode-status', cls=Command)

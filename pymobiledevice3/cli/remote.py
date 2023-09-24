@@ -2,7 +2,8 @@ import asyncio
 import logging
 import json
 from typing import List, TextIO
-
+from aioconsole import get_standard_streams
+import sys
 import click
 from cryptography.hazmat.primitives.asymmetric import rsa
 
@@ -73,9 +74,13 @@ async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, sec
             # if secrets is not None:
             #     print(click.style('Secrets: ', bold=True, fg='magenta') +
             #           click.style(secrets.name, bold=True, fg='white'))
-            data = {'cmd':'start_quic_tunnel','UDID':f'{service_provider.udid}','rsd':f'{tunnel_result.address} {tunnel_result.port}'}
+            data = {'cmd': 'start_quic_tunnel',
+                    'UDID': f'{service_provider.udid}',
+                    'rsd_address': f'{tunnel_result.address}',
+                    'rsd_port': f'{tunnel_result.port}',
+                    }
             json_str = json.dumps(data)
-            print(json_str)
+            print(json_str, flush=True)
             # print(click.style('UDID: ', bold=True, fg='yellow') +
             #       click.style(service_provider.udid, bold=True, fg='white'))
             # print(click.style('ProductType: ', bold=True, fg='yellow') +
@@ -122,8 +127,22 @@ def cli_start_quic_tunnel(udid: str, secrets: TextIO):
 
     if udid is not None and rsd.udid != udid:
         raise NoDeviceConnectedError()
-
+    # asyncio.run(mainio())
     asyncio.run(start_quic_tunnel(rsd, secrets), debug=True)
+
+
+async def mainio():
+    async def main():
+        reader, writer = await get_standard_streams()
+    # proc = await asyncio.create_subprocess_exec(
+    #     "top",
+    #     stdout=asyncio.subprocess.PIPE,
+    # )
+    #
+    # line = await proc.stdout.readline()
+    # while line:
+    #     print(line.decode())
+    #     line = await proc.stdout.readline()
 
 
 @remote_cli.command('service', cls=RSDCommand)

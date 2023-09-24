@@ -116,7 +116,9 @@ class NotMountedError(PyMobileDevice3Exception):
     """ Given image for umount wasn't mounted in the first place """
     pass
 
-
+class NotFoundImageError(PyMobileDevice3Exception):
+    """ Not Found Image """
+    pass
 class AlreadyMountedError(PyMobileDevice3Exception):
     """ Given image for mount has already been mounted in the first place """
     pass

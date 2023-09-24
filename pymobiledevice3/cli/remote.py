@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import json
 from typing import List, TextIO
 
 import click
@@ -69,24 +70,26 @@ async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, sec
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     with create_core_device_tunnel_service(service_provider, autopair=True) as service:
         async with service.start_quic_tunnel(private_key, secrets_log_file=secrets) as tunnel_result:
-            if secrets is not None:
-                print(click.style('Secrets: ', bold=True, fg='magenta') +
-                      click.style(secrets.name, bold=True, fg='white'))
-            print(click.style('UDID: ', bold=True, fg='yellow') +
-                  click.style(service_provider.udid, bold=True, fg='white'))
-            print(click.style('ProductType: ', bold=True, fg='yellow') +
-                  click.style(service_provider.product_type, bold=True, fg='white'))
-            print(click.style('ProductVersion: ', bold=True, fg='yellow') +
-                  click.style(service_provider.product_version, bold=True, fg='white'))
-            print(click.style('Interface: ', bold=True, fg='yellow') +
-                  click.style(tunnel_result.interface, bold=True, fg='white'))
-            print(click.style('RSD Address: ', bold=True, fg='yellow') +
-                  click.style(tunnel_result.address, bold=True, fg='white'))
-            print(click.style('RSD Port: ', bold=True, fg='yellow') +
-                  click.style(tunnel_result.port, bold=True, fg='white'))
-            print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
-                  click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
-
+            # if secrets is not None:
+            #     print(click.style('Secrets: ', bold=True, fg='magenta') +
+            #           click.style(secrets.name, bold=True, fg='white'))
+            data = {'cmd':'start_quic_tunnel','UDID':f'{service_provider.udid}','rsd':f'{tunnel_result.address} {tunnel_result.port}'}
+            json_str = json.dumps(data)
+            print(json_str)
+            # print(click.style('UDID: ', bold=True, fg='yellow') +
+            #       click.style(service_provider.udid, bold=True, fg='white'))
+            # print(click.style('ProductType: ', bold=True, fg='yellow') +
+            #       click.style(service_provider.product_type, bold=True, fg='white'))
+            # print(click.style('ProductVersion: ', bold=True, fg='yellow') +
+            #       click.style(service_provider.product_version, bold=True, fg='white'))
+            # print(click.style('Interface: ', bold=True, fg='yellow') +
+            #       click.style(tunnel_result.interface, bold=True, fg='white'))
+            # print(click.style('RSD Address: ', bold=True, fg='yellow') +
+            #       click.style(tunnel_result.address, bold=True, fg='white'))
+            # print(click.style('RSD Port: ', bold=True, fg='yellow') +
+            #       click.style(tunnel_result.port, bold=True, fg='white'))
+            # print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
+            #       click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
             while True:
                 # wait user input while the asyncio tasks execute
                 # 需要保留连接才能修改定位

@@ -10,7 +10,7 @@ from pymobiledevice3.cli.cli_common import RSDCommand, print_json, prompt_device
 from pymobiledevice3.exceptions import NoDeviceConnectedError
 from pymobiledevice3.remote.bonjour import get_remoted_addresses
 from pymobiledevice3.remote.remote_service_discovery import RSD_PORT, RemoteServiceDiscoveryService
-from pymobiledevice3.remote.utils import stop_remoted
+from pymobiledevice3.remote.utils import resume_remoted_if_required, stop_remoted, stop_remoted_if_required
 
 logger = logging.getLogger(__name__)
 
@@ -71,11 +71,10 @@ def rsd_info(service_provider: RemoteServiceDiscoveryService, color: bool):
 
 async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, secrets: TextIO) -> None:
     private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+
+    stop_remoted_if_required()
     with create_core_device_tunnel_service(service_provider, autopair=True) as service:
         async with service.start_quic_tunnel(private_key, secrets_log_file=secrets) as tunnel_result:
-            # if secrets is not None:
-            #     print(click.style('Secrets: ', bold=True, fg='magenta') +
-            #           click.style(secrets.name, bold=True, fg='white'))
             data = {'cmd': 'start_quic_tunnel',
                     'UDID': f'{service_provider.udid}',
                     'rsd_address': f'{tunnel_result.address}',
@@ -83,20 +82,24 @@ async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, sec
                     }
             json_str = json.dumps(data)
             print(json_str, flush=True)
-            # print(click.style('UDID: ', bold=True, fg='yellow') +
-            #       click.style(service_provider.udid, bold=True, fg='white'))
-            # print(click.style('ProductType: ', bold=True, fg='yellow') +
-            #       click.style(service_provider.product_type, bold=True, fg='white'))
-            # print(click.style('ProductVersion: ', bold=True, fg='yellow') +
-            #       click.style(service_provider.product_version, bold=True, fg='white'))
-            # print(click.style('Interface: ', bold=True, fg='yellow') +
-            #       click.style(tunnel_result.interface, bold=True, fg='white'))
-            # print(click.style('RSD Address: ', bold=True, fg='yellow') +
-            #       click.style(tunnel_result.address, bold=True, fg='white'))
-            # print(click.style('RSD Port: ', bold=True, fg='yellow') +
-            #       click.style(tunnel_result.port, bold=True, fg='white'))
-            # print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
-            #       click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
+            resume_remoted_if_required()
+#            if secrets is not None:
+#                print(click.style('Secrets: ', bold=True, fg='magenta') +
+#                      click.style(secrets.name, bold=True, fg='white'))
+#            print(click.style('UDID: ', bold=True, fg='yellow') +
+#                  click.style(service_provider.udid, bold=True, fg='white'))
+#            print(click.style('ProductType: ', bold=True, fg='yellow') +
+#                  click.style(service_provider.product_type, bold=True, fg='white'))
+#            print(click.style('ProductVersion: ', bold=True, fg='yellow') +
+#                  click.style(service_provider.product_version, bold=True, fg='white'))
+#            print(click.style('Interface: ', bold=True, fg='yellow') +
+#                  click.style(tunnel_result.interface, bold=True, fg='white'))
+#            print(click.style('RSD Address: ', bold=True, fg='yellow') +
+#                  click.style(tunnel_result.address, bold=True, fg='white'))
+#            print(click.style('RSD Port: ', bold=True, fg='yellow') +
+#                  click.style(tunnel_result.port, bold=True, fg='white'))
+#            print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
+#                  click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
             while True:
                 # wait user input while the asyncio tasks execute
                 # 需要保留连接才能修改定位

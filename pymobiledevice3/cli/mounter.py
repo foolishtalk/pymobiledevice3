@@ -123,7 +123,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
         auto_mount(service_provider, path=path, xcode=xcode, version=version)
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '0',
+                'code': 0,
                 'msg': 'DeveloperDiskImage mounted successfully',
                 }
         json_str = json.dumps(data)
@@ -131,7 +131,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
     except URLError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '1',
+                'code': 1,
                 'msg': 'failed to query DeveloperDiskImage versions',
                 }
         json_str = json.dumps(data)
@@ -139,7 +139,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
     except DeveloperDiskImageNotFoundError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '2',
+                'code': 2,
                 'msg': 'Unable to find the correct DeveloperDiskImage',
                 }
         json_str = json.dumps(data)
@@ -147,7 +147,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
     except AlreadyMountedError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '3',
+                'code': 3,
                 'msg': 'DeveloperDiskImage already mounted',
                 }
         json_str = json.dumps(data)
@@ -155,7 +155,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
     except NotFoundImageError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '4',
+                'code': 4,
                 'msg': 'DeveloperDiskImage not found',
                 }
         json_str = json.dumps(data)
@@ -163,7 +163,7 @@ def mounter_auto_mount(service_provider: LockdownClient,path: str, xcode: str, v
     except PermissionError as e:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
-                'code': '4',
+                'code': 5,
                 'msg': f'DeveloperDiskImage could not be saved to Xcode default path ({e.filename}).Please make sure your user has the necessary permissions',
                 }
         json_str = json.dumps(data)

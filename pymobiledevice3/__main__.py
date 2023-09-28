@@ -66,7 +66,7 @@ def cli():
 
     cli_commands = click.CommandCollection(sources=[
         developer_cli, mounter_cli, apps_cli, profile_cli, lockdown_cli, diagnostics_cli, syslog_cli, pcap_cli,
-        crash_cli, afc_cli, ps_cli, usbmux_cli, power_assertion_cli,
+        crash_cli, afc_cli, usbmux_cli, power_assertion_cli,
         provision_cli, backup_cli, activation_cli, companion_cli, amfi_cli, bonjour_cli,
         remote_cli
     ])

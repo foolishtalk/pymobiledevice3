@@ -2,7 +2,6 @@ import asyncio
 import logging
 import json
 from typing import List, TextIO
-from aioconsole import get_standard_streams
 import sys
 import click
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -127,23 +126,7 @@ def cli_start_quic_tunnel(udid: str, secrets: TextIO):
 
     if udid is not None and rsd.udid != udid:
         raise NoDeviceConnectedError()
-    # asyncio.run(mainio())
     asyncio.run(start_quic_tunnel(rsd, secrets), debug=True)
-
-
-async def mainio():
-    async def main():
-        reader, writer = await get_standard_streams()
-    # proc = await asyncio.create_subprocess_exec(
-    #     "top",
-    #     stdout=asyncio.subprocess.PIPE,
-    # )
-    #
-    # line = await proc.stdout.readline()
-    # while line:
-    #     print(line.decode())
-    #     line = await proc.stdout.readline()
-
 
 @remote_cli.command('service', cls=RSDCommand)
 @click.argument('service_name')

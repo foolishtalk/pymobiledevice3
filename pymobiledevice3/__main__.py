@@ -25,8 +25,6 @@ from pymobiledevice3.cli.processes import cli as ps_cli
 from pymobiledevice3.cli.profile import cli as profile_cli
 from pymobiledevice3.cli.provision import cli as provision_cli
 from pymobiledevice3.cli.remote import cli as remote_cli
-from pymobiledevice3.cli.restore import cli as restore_cli
-from pymobiledevice3.cli.springboard import cli as springboard_cli
 from pymobiledevice3.cli.syslog import cli as syslog_cli
 from pymobiledevice3.cli.usbmux import cli as usbmux_cli
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedError, DeveloperModeError, \
@@ -50,16 +48,28 @@ logger = logging.getLogger(__name__)
 
 
 def cli():
-    if sys.argv[1] != '--password':
+    password_result = False
+    password_verify_result = False
+    password_index = 0
+    password_verify_index = 0
+    index = 0
+    for argv in sys.argv:
+        if argv == "--password":
+            password_result = True
+            password_index = index
+        if argv == "password_verify":
+            password_verify_result = True
+            password_index = index
+        index += 1
+    if password_index == 0 and password_verify_index == 0:
         return
-    if sys.argv[2] != 'password_verify':
-        return
-    sys.argv.pop()
-    sys.argv.pop()
+    sys.argv.pop(password_index)
+    sys.argv.pop(password_verify_index)
+
     cli_commands = click.CommandCollection(sources=[
         developer_cli, mounter_cli, apps_cli, profile_cli, lockdown_cli, diagnostics_cli, syslog_cli, pcap_cli,
-        crash_cli, afc_cli, ps_cli, notification_cli, usbmux_cli, power_assertion_cli, springboard_cli,
-        provision_cli, backup_cli, restore_cli, activation_cli, companion_cli, amfi_cli, bonjour_cli,
+        crash_cli, afc_cli, ps_cli, notification_cli, usbmux_cli, power_assertion_cli,
+        provision_cli, backup_cli, activation_cli, companion_cli, amfi_cli, bonjour_cli,
         remote_cli
     ])
     cli_commands.context_settings = dict(help_option_names=['-h', '--help'])

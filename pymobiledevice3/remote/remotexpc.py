@@ -2,7 +2,6 @@ import socket
 from socket import create_connection
 from typing import Generator, Mapping, Optional, Tuple
 
-import IPython
 from construct import StreamError
 from hyperframe.frame import DataFrame, Frame, GoAwayFrame, HeadersFrame, RstStreamFrame, SettingsFrame, \
     WindowUpdateFrame
@@ -104,14 +103,7 @@ class RemoteXPCConnection:
         return self.receive_response()
 
     def shell(self) -> None:
-        IPython.embed(
-            header=highlight(SHELL_USAGE, lexers.PythonLexer(),
-                             formatters.TerminalTrueColorFormatter(style='native')),
-            user_ns={
-                'client': self,
-                'XpcInt64Type': XpcInt64Type,
-                'XpcUInt64Type': XpcUInt64Type,
-            })
+        return
 
     def _do_handshake(self) -> None:
         self.sock.sendall(HTTP2_MAGIC)

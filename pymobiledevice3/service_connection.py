@@ -8,7 +8,6 @@ import time
 from enum import Enum, auto
 from typing import Mapping, Optional
 
-import IPython
 from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.exceptions import ConnectionFailedError, ConnectionTerminatedError, NoDeviceConnectedError, \
@@ -191,8 +190,9 @@ class LockdownServiceConnection:
         self._reader, self._writer = await asyncio.open_connection(sock=self.socket)
 
     def shell(self) -> None:
-        IPython.embed(
-            header=highlight(SHELL_USAGE, lexers.PythonLexer(), formatters.TerminalTrueColorFormatter(style='native')),
-            user_ns={
-                'client': self,
-            })
+        return
+        # IPython.embed(
+        #     header=highlight(SHELL_USAGE, lexers.PythonLexer(), formatters.TerminalTrueColorFormatter(style='native')),
+        #     user_ns={
+        #         'client': self,
+        #     })

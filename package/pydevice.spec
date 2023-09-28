@@ -14,7 +14,7 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=['IPython'],
+    excludes=['IPython', 'pycrashreport'],
     noarchive=False,
 )
 pyz = PYZ(a.pure)

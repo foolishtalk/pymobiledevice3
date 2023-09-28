@@ -11,7 +11,6 @@ from pymobiledevice3.cli.amfi import cli as amfi_cli
 from pymobiledevice3.cli.apps import cli as apps_cli
 from pymobiledevice3.cli.backup import cli as backup_cli
 from pymobiledevice3.cli.companion_proxy import cli as companion_cli
-from pymobiledevice3.cli.crash import cli as crash_cli
 from pymobiledevice3.cli.developer import cli as developer_cli
 from pymobiledevice3.cli.diagnostics import cli as diagnostics_cli
 from pymobiledevice3.cli.lockdown import cli as lockdown_cli
@@ -63,7 +62,7 @@ def cli():
 
     cli_commands = click.CommandCollection(sources=[
         developer_cli, mounter_cli, apps_cli, profile_cli, lockdown_cli, diagnostics_cli, syslog_cli, pcap_cli,
-        crash_cli, afc_cli, usbmux_cli, power_assertion_cli,
+         afc_cli, usbmux_cli, power_assertion_cli,
         provision_cli, backup_cli, activation_cli, companion_cli, amfi_cli,
         remote_cli
     ])

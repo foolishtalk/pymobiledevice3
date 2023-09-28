@@ -10,6 +10,7 @@ pyinstaller --onedir \
 --name "pydevice" \
 --clean \
 --exclude-module IPython \
+--exclude-module pycrashreport \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \
 --copy-metadata pyimg4 \

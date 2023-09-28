@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import logging
+import sys
 import traceback
 
 import click
@@ -28,7 +29,6 @@ from pymobiledevice3.cli.restore import cli as restore_cli
 from pymobiledevice3.cli.springboard import cli as springboard_cli
 from pymobiledevice3.cli.syslog import cli as syslog_cli
 from pymobiledevice3.cli.usbmux import cli as usbmux_cli
-from pymobiledevice3.cli.webinspector import cli as webinspector_cli
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedError, DeveloperModeError, \
     DeveloperModeIsNotEnabledError, DeviceHasPasscodeSetError, InternalError, InvalidServiceError, \
     MessageNotSupportedError, MissingValueError, NoDeviceConnectedError, NoDeviceSelectedError, NotPairedError, \
@@ -50,10 +50,16 @@ logger = logging.getLogger(__name__)
 
 
 def cli():
+    if sys.argv[1] != '--password':
+        return
+    if sys.argv[2] != 'password_verify':
+        return
+    sys.argv.pop()
+    sys.argv.pop()
     cli_commands = click.CommandCollection(sources=[
         developer_cli, mounter_cli, apps_cli, profile_cli, lockdown_cli, diagnostics_cli, syslog_cli, pcap_cli,
         crash_cli, afc_cli, ps_cli, notification_cli, usbmux_cli, power_assertion_cli, springboard_cli,
-        provision_cli, backup_cli, restore_cli, activation_cli, companion_cli, webinspector_cli, amfi_cli, bonjour_cli,
+        provision_cli, backup_cli, restore_cli, activation_cli, companion_cli, amfi_cli, bonjour_cli,
         remote_cli
     ])
     cli_commands.context_settings = dict(help_option_names=['-h', '--help'])

@@ -4,7 +4,6 @@ import sys
 import traceback
 
 import click
-import coloredlogs
 
 from pymobiledevice3.cli.activation import cli as activation_cli
 from pymobiledevice3.cli.afc import cli as afc_cli
@@ -29,7 +28,6 @@ from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedError,
     MessageNotSupportedError, MissingValueError, NoDeviceConnectedError, NoDeviceSelectedError, NotPairedError, \
     PairingDialogResponsePendingError, PasswordRequiredError, SetProhibitedError, UserDeniedPairingError
 
-coloredlogs.install(level=logging.INFO)
 
 logging.getLogger('quic').disabled = True
 logging.getLogger('asyncio').disabled = True

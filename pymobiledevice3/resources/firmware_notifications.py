@@ -4,11 +4,9 @@ import plistlib
 from typing import List
 
 import click
-import coloredlogs
 
 NOTIFICATIONS_FILENAME = os.path.join(os.path.dirname(__file__), 'notifications.txt')
 
-coloredlogs.install(level=logging.DEBUG)
 
 
 def get_notifications():

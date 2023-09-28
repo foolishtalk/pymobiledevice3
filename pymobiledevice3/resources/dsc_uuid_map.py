@@ -4,9 +4,7 @@ import os.path
 from uuid import UUID
 
 import click
-import coloredlogs
 
-coloredlogs.install(level=logging.DEBUG)
 
 MAGIC = b'\x0b\x10\x00\x00'
 DYLD_MAGIC = b'dyld_v1'

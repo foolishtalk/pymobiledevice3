@@ -8,6 +8,7 @@ rm __main__.spec
 pyinstaller --onedir \
 --osx-bundle-identifier com.karim.pymobile \
 --name "pydevice" \
+--clean \
 --exclude-module IPython \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \

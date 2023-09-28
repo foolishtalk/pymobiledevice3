@@ -6,7 +6,6 @@ import uuid
 from typing import Callable, List, Mapping, Optional, Tuple
 
 import click
-import coloredlogs
 import hexdump
 import inquirer3
 from inquirer3.themes import GreenPassion
@@ -47,7 +46,7 @@ def print_hex(data, colored=True):
 
 
 def set_verbosity(ctx, param, value):
-    coloredlogs.set_level(logging.INFO - (value * 10))
+    return
 
 
 def wait_return():

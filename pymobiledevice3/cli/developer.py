@@ -10,7 +10,6 @@ from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
-
 import click
 from click.exceptions import MissingParameter, UsageError
 from packaging.version import Version
@@ -956,7 +955,16 @@ def dvt_simulate_location_set(service_provider: LockdownClient, latitude, longit
     """
     with DvtSecureSocketProxyService(service_provider) as dvt:
         LocationSimulation(dvt).simulate_location(latitude, longitude)
-        wait_return()
+        input('')
+    # while True:
+    #     text = input("wait input")
+    #     print(text)
+    #     coordinate = text.split(',')
+    #     input_latitude = coordinate[0]
+    #     input_longitude = coordinate[1]
+    #     with DvtSecureSocketProxyService(service_provider) as dvt:
+    #         LocationSimulation(dvt).simulate_location(float(input_latitude), float(input_longitude))
+
 
 
 @developer.group()

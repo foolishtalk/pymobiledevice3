@@ -954,16 +954,16 @@ def dvt_simulate_location_set(service_provider: LockdownClient, latitude, longit
         ... set -- 40.690008 -74.045843 for liberty island
     """
     with DvtSecureSocketProxyService(service_provider) as dvt:
-        LocationSimulation(dvt).simulate_location(latitude, longitude)
-        input('')
-    # while True:
-    #     text = input("wait input")
-    #     print(text)
-    #     coordinate = text.split(',')
-    #     input_latitude = coordinate[0]
-    #     input_longitude = coordinate[1]
-    #     with DvtSecureSocketProxyService(service_provider) as dvt:
-    #         LocationSimulation(dvt).simulate_location(float(input_latitude), float(input_longitude))
+        location = LocationSimulation(dvt)
+        location.simulate_location(latitude, longitude)
+        while True:
+            text = input("")
+            if text == "-":
+                break
+            coordinate = text.split(',')
+            input_latitude = coordinate[0]
+            input_longitude = coordinate[1]
+            location.simulate_location(float(input_latitude), float(input_longitude))
 
 
 

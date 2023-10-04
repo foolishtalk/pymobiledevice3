@@ -29,6 +29,9 @@ def stop_remoted() -> Generator[None, None, None]:
         return
 
     remoted = _get_remoted_process()
+    if remoted is None:
+        yield
+        return
     if remoted.status() == 'stopped':
         # process already stopped, we don't need to do anything
         yield

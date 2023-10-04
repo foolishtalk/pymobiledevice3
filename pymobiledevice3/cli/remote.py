@@ -122,12 +122,15 @@ def cli_start_quic_tunnel(udid: str, secrets: TextIO):
             rsd = prompt_device_list(devices)
         else:
             rsd = [device for device in devices if device.udid == udid]
+            for device in devices:
+                print(f'start quic tunnel rsd:device uid:{device.udid} pass:{udid}', flush=True)
             if len(rsd) > 0:
                 rsd = rsd[0]
             else:
                 raise NoDeviceConnectedError()
 
     if udid is not None and rsd.udid != udid:
+        print(f'start quic tunnel no device connect rsd uid:{rsd.udid} pass:{udid}', flush=True)
         raise NoDeviceConnectedError()
     asyncio.run(start_quic_tunnel(rsd, secrets), debug=True)
 

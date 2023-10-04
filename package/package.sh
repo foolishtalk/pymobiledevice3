@@ -9,6 +9,8 @@ pyinstaller --onedir \
 --osx-bundle-identifier com.karim.pymobile \
 --name "pydevice" \
 --clean \
+--exclude-module coloredlogs \
+--exclude-module inquirer3 \
 --exclude-module IPython \
 --exclude-module pycrashreport \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \

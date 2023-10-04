@@ -110,4 +110,6 @@ def cli():
 
 
 if __name__ == '__main__':
+    temp = sys.stdout
+    sys.stderr = temp
     cli()

@@ -7,8 +7,8 @@ from typing import Callable, List, Mapping, Optional, Tuple
 
 import click
 import hexdump
-import inquirer3
-from inquirer3.themes import GreenPassion
+# import inquirer3
+# from inquirer3.themes import GreenPassion
 from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.exceptions import NoDeviceSelectedError
@@ -57,12 +57,7 @@ UDID_ENV_VAR = 'PYMOBILEDEVICE3_UDID'
 
 
 def prompt_device_list(device_list: List):
-    device_question = [inquirer3.List('device', message='choose device', choices=device_list, carousel=True)]
-    try:
-        result = inquirer3.prompt(device_question, theme=GreenPassion(), raise_keyboard_interrupt=True)
-        return result['device']
-    except KeyboardInterrupt:
-        raise NoDeviceSelectedError()
+    raise NoDeviceSelectedError()
 
 
 def choose_service_provider(callback: Callable):

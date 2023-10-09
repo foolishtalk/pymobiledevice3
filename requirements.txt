@@ -1,11 +1,8 @@
 construct>=2.9.29
 asn1
-termcolor
 click
-coloredlogs
 IPython
 bpylist2>=4.0.1
-pygments
 hexdump
 arrow
 daemonize
@@ -18,7 +15,6 @@ cmd2
 packaging
 pygnuutils>=0.0.7
 cryptography>=41.0.1
-pycrashreport>=1.0.6
 fastapi[all]
 uvicorn>=0.15.0
 starlette

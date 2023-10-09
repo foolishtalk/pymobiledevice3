@@ -15,6 +15,7 @@ pyinstaller --onedir \
 --exclude-module inquirer3 \
 --exclude-module IPython \
 --exclude-module pycrashreport \
+--exclude-module pyreadline3 \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \
 --copy-metadata pyimg4 \

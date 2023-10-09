@@ -5,7 +5,7 @@ from typing import Generator, Mapping, Optional, Tuple
 from construct import StreamError
 from hyperframe.frame import DataFrame, Frame, GoAwayFrame, HeadersFrame, RstStreamFrame, SettingsFrame, \
     WindowUpdateFrame
-from pygments import formatters, highlight, lexers
+# from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.exceptions import StreamClosedError
 from pymobiledevice3.remote.xpc_message import XpcFlags, XpcInt64Type, XpcUInt64Type, XpcWrapper, create_xpc_wrapper, \

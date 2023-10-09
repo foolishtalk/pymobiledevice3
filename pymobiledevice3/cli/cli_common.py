@@ -9,7 +9,7 @@ import click
 import hexdump
 # import inquirer3
 # from inquirer3.themes import GreenPassion
-from pygments import formatters, highlight, lexers
+# from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.exceptions import NoDeviceSelectedError
 from pymobiledevice3.lockdown import LockdownClient, create_using_usbmux

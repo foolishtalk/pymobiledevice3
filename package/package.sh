@@ -9,6 +9,8 @@ pyinstaller --onedir \
 --osx-bundle-identifier com.karim.pymobile \
 --name "pydevice" \
 --clean \
+--exclude-module pygments \
+--exclude-module termcolor \
 --exclude-module coloredlogs \
 --exclude-module inquirer3 \
 --exclude-module IPython \

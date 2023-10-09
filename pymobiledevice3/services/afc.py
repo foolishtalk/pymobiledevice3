@@ -17,7 +17,7 @@ import hexdump
 from click.exceptions import Exit
 from cmd2 import Cmd, Cmd2ArgumentParser, with_argparser
 from construct import Const, Container, CString, Enum, GreedyRange, Int64ul, Struct, Tell
-from pygments import formatters, highlight, lexers
+# from pygments import formatters, highlight, lexers
 from pygnuutils.cli.ls import ls as ls_cli
 from pygnuutils.ls import Ls, LsStub
 
@@ -821,8 +821,9 @@ class AfcShell(Cmd):
         return posixpath.join(self.curdir, filename)
 
     def _update_prompt(self):
-        self.prompt = highlight(f'[{self.afc.service_name}:{self.curdir}]$ ', lexers.BashSessionLexer(),
-                                formatters.TerminalTrueColorFormatter(style='solarized-dark')).strip()
+        return
+        # self.prompt = highlight(f'[{self.afc.service_name}:{self.curdir}]$ ', lexers.BashSessionLexer(),
+        #                         formatters.TerminalTrueColorFormatter(style='solarized-dark')).strip()
 
     def _complete(self, text, line, begidx, endidx):
         curdir_diff = posixpath.dirname(text)

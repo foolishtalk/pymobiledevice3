@@ -14,7 +14,7 @@ a = Analysis(
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=['coloredlogs', 'inquirer3', 'IPython', 'pycrashreport'],
+    excludes=['pygments', 'termcolor', 'coloredlogs', 'inquirer3', 'IPython', 'pycrashreport'],
     noarchive=False,
 )
 pyz = PYZ(a.pure)

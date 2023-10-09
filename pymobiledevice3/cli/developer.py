@@ -13,8 +13,8 @@ from typing import List, Optional
 import click
 from click.exceptions import MissingParameter, UsageError
 from packaging.version import Version
-from pykdebugparser.pykdebugparser import PyKdebugParser
-from termcolor import colored
+# from pykdebugparser.pykdebugparser import PyKdebugParser
+# from termcolor import colored
 
 import pymobiledevice3
 from pymobiledevice3.cli.cli_common import BASED_INT, Command, RSDCommand, default_json_encoder, print_json, wait_return
@@ -373,35 +373,35 @@ def parse_filters(subclasses: List[int], classes: List[int]):
 def live_profile_session(service_provider: LockdownClient, count, bsc, class_filters, subclass_filters, tid, timestamp,
                          event_name, func_qual, show_tid, process_name, args):
     """ Print kevents received from the device in real time. """
-
-    parser = PyKdebugParser()
-    parser.filter_class = class_filters
-    if bsc:
-        subclass_filters = list(subclass_filters) + [BSC_SUBCLASS]
-    parser.filter_subclass = subclass_filters
-    filters = parse_filters(subclass_filters, class_filters)
-    parser.filter_tid = tid
-    parser.show_timestamp = timestamp
-    parser.show_name = event_name
-    parser.show_func_qual = func_qual
-    parser.show_tid = show_tid
-    parser.show_process = process_name
-    parser.show_args = args
-    with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
-        trace_codes_map = DeviceInfo(dvt).trace_codes()
-        time_config = CoreProfileSessionTap.get_time_config(dvt)
-        parser.numer = time_config['numer']
-        parser.denom = time_config['denom']
-        parser.mach_absolute_time = time_config['mach_absolute_time']
-        parser.usecs_since_epoch = time_config['usecs_since_epoch']
-        parser.timezone = time_config['timezone']
-        with CoreProfileSessionTap(dvt, time_config, filters) as tap:
-            i = 0
-            for event in parser.formatted_kevents(tap.get_kdbuf_stream(), trace_codes_map):
-                print(event)
-                i += 1
-                if i == count:
-                    break
+    return
+    # parser = PyKdebugParser()
+    # parser.filter_class = class_filters
+    # if bsc:
+    #     subclass_filters = list(subclass_filters) + [BSC_SUBCLASS]
+    # parser.filter_subclass = subclass_filters
+    # filters = parse_filters(subclass_filters, class_filters)
+    # parser.filter_tid = tid
+    # parser.show_timestamp = timestamp
+    # parser.show_name = event_name
+    # parser.show_func_qual = func_qual
+    # parser.show_tid = show_tid
+    # parser.show_process = process_name
+    # parser.show_args = args
+    # with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
+    #     trace_codes_map = DeviceInfo(dvt).trace_codes()
+    #     time_config = CoreProfileSessionTap.get_time_config(dvt)
+    #     parser.numer = time_config['numer']
+    #     parser.denom = time_config['denom']
+    #     parser.mach_absolute_time = time_config['mach_absolute_time']
+    #     parser.usecs_since_epoch = time_config['usecs_since_epoch']
+    #     parser.timezone = time_config['timezone']
+    #     with CoreProfileSessionTap(dvt, time_config, filters) as tap:
+    #         i = 0
+    #         for event in parser.formatted_kevents(tap.get_kdbuf_stream(), trace_codes_map):
+    #             print(event)
+    #             i += 1
+    #             if i == count:
+    #                 break
 
 
 @core_profile_session.command('save', cls=Command)
@@ -451,37 +451,38 @@ def parse_live_profile_session(service_provider: LockdownClient, count, tid, sho
                                subclass_filters,
                                process, color):
     """ Print traces (syscalls, thread events, etc.) received from the device in real time. """
-    with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
-        print('Receiving time information')
-        time_config = CoreProfileSessionTap.get_time_config(dvt)
-        parser = PyKdebugParser()
-        parser.filter_class = list(class_filters)
-        if bsc:
-            subclass_filters = list(subclass_filters) + [BSC_SUBCLASS]
-        parser.filter_subclass = subclass_filters
-        filters = parse_filters(subclass_filters, class_filters)
-        parser.numer = time_config['numer']
-        parser.denom = time_config['denom']
-        parser.mach_absolute_time = time_config['mach_absolute_time']
-        parser.usecs_since_epoch = time_config['usecs_since_epoch']
-        parser.timezone = time_config['timezone']
-        parser.filter_tid = tid
-        parser.filter_process = process
-        parser.color = color
-        parser.show_tid = show_tid
-
-        with CoreProfileSessionTap(dvt, time_config, filters) as tap:
-            if show_tid:
-                print('{:^32}|{:^11}|{:^33}|   Event'.format('Time', 'Thread', 'Process'))
-            else:
-                print('{:^32}|{:^33}|   Event'.format('Time', 'Process'))
-
-            i = 0
-            for trace in parser.formatted_traces(tap.get_kdbuf_stream()):
-                print(trace)
-                i += 1
-                if i == count:
-                    break
+    return
+    # with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
+    #     print('Receiving time information')
+    #     time_config = CoreProfileSessionTap.get_time_config(dvt)
+    #     parser = PyKdebugParser()
+    #     parser.filter_class = list(class_filters)
+    #     if bsc:
+    #         subclass_filters = list(subclass_filters) + [BSC_SUBCLASS]
+    #     parser.filter_subclass = subclass_filters
+    #     filters = parse_filters(subclass_filters, class_filters)
+    #     parser.numer = time_config['numer']
+    #     parser.denom = time_config['denom']
+    #     parser.mach_absolute_time = time_config['mach_absolute_time']
+    #     parser.usecs_since_epoch = time_config['usecs_since_epoch']
+    #     parser.timezone = time_config['timezone']
+    #     parser.filter_tid = tid
+    #     parser.filter_process = process
+    #     parser.color = color
+    #     parser.show_tid = show_tid
+    #
+    #     with CoreProfileSessionTap(dvt, time_config, filters) as tap:
+    #         if show_tid:
+    #             print('{:^32}|{:^11}|{:^33}|   Event'.format('Time', 'Thread', 'Process'))
+    #         else:
+    #             print('{:^32}|{:^33}|   Event'.format('Time', 'Process'))
+    #
+    #         i = 0
+    #         for trace in parser.formatted_traces(tap.get_kdbuf_stream()):
+    #             print(trace)
+    #             i += 1
+    #             if i == count:
+    #                 break
 
 
 def get_image_name(dsc_uuid_map, image_uuid, current_dsc_map):
@@ -510,31 +511,32 @@ def format_callstack(callstack, dsc_uuid_map, current_dsc_map):
 @click.option('--color/--no-color', default=True)
 def callstacks_live_profile_session(service_provider: LockdownClient, count, process, tid, show_tid, color):
     """ Print callstacks received from the device in real time. """
-    with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
-        print('Receiving time information')
-        time_config = CoreProfileSessionTap.get_time_config(dvt)
-        parser = PyKdebugParser()
-        parser.numer = time_config['numer']
-        parser.denom = time_config['denom']
-        parser.mach_absolute_time = time_config['mach_absolute_time']
-        parser.usecs_since_epoch = time_config['usecs_since_epoch']
-        parser.timezone = time_config['timezone']
-        parser.filter_tid = tid
-        parser.filter_process = process
-        parser.color = color
-        parser.show_tid = show_tid
-
-        with open(os.path.join(pymobiledevice3.__path__[0], 'resources', 'dsc_uuid_map.json'), 'r') as fd:
-            dsc_uuid_map = json.load(fd)
-
-        current_dsc_map = {}
-        with CoreProfileSessionTap(dvt, time_config) as tap:
-            i = 0
-            for callstack in parser.formatted_callstacks(tap.get_kdbuf_stream()):
-                print(format_callstack(callstack, dsc_uuid_map, current_dsc_map))
-                i += 1
-                if i == count:
-                    break
+    return
+    # with DvtSecureSocketProxyService(lockdown=service_provider) as dvt:
+    #     print('Receiving time information')
+    #     time_config = CoreProfileSessionTap.get_time_config(dvt)
+    #     parser = PyKdebugParser()
+    #     parser.numer = time_config['numer']
+    #     parser.denom = time_config['denom']
+    #     parser.mach_absolute_time = time_config['mach_absolute_time']
+    #     parser.usecs_since_epoch = time_config['usecs_since_epoch']
+    #     parser.timezone = time_config['timezone']
+    #     parser.filter_tid = tid
+    #     parser.filter_process = process
+    #     parser.color = color
+    #     parser.show_tid = show_tid
+    #
+    #     with open(os.path.join(pymobiledevice3.__path__[0], 'resources', 'dsc_uuid_map.json'), 'r') as fd:
+    #         dsc_uuid_map = json.load(fd)
+    #
+    #     current_dsc_map = {}
+    #     with CoreProfileSessionTap(dvt, time_config) as tap:
+    #         i = 0
+    #         for callstack in parser.formatted_callstacks(tap.get_kdbuf_stream()):
+    #             print(format_callstack(callstack, dsc_uuid_map, current_dsc_map))
+    #             i += 1
+    #             if i == count:
+    #                 break
 
 
 @dvt.command('trace-codes', cls=Command)
@@ -589,14 +591,6 @@ def dvt_oslog(service_provider: LockdownClient, color, pid):
                     formatted_message = decode_message_format(message.message)
                 else:
                     formatted_message = message.name
-
-                if color:
-                    timestamp = colored(str(timestamp), attrs=['bold'])
-                    message_pid = colored(str(message_pid), 'magenta')
-                    subsystem = colored(subsystem, 'green')
-                    category = colored(category, 'green')
-                    image_name = colored(image_name, 'yellow')
-                    message_type = colored(message_type, 'cyan')
 
                 print(f'[{timestamp}][{subsystem}][{category}][{message_pid}][{image_name}] '
                       f'<{message_type}>: {formatted_message}')

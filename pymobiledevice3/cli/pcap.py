@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import IO
 
 import click
-from pygments import formatters, highlight, lexers
+# from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.cli.cli_common import Command, print_hex
 from pymobiledevice3.lockdown import LockdownClient

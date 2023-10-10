@@ -1,7 +1,6 @@
 import struct
 import time
 
-import gpxpy
 
 from pymobiledevice3.lockdown import LockdownClient
 from pymobiledevice3.services.lockdown_service import LockdownService
@@ -28,19 +27,20 @@ class DtSimulateLocation(LockdownService):
         service.sendall(struct.pack('>I', len(longitude)) + longitude)
 
     def play_gpx_file(self, filename: str, disable_sleep: bool = False):
-        with open(filename) as f:
-            gpx = gpxpy.parse(f)
-
-        last_time = None
-        for track in gpx.tracks:
-            for segment in track.segments:
-                for point in segment.points:
-                    if last_time is not None:
-                        duration = (point.time - last_time).total_seconds()
-                        if duration >= 0:
-                            if not disable_sleep:
-                                self.logger.info(f'waiting for {duration}s')
-                                time.sleep(duration)
-                    last_time = point.time
-                    self.logger.info(f'set location to {point.latitude} {point.longitude}')
-                    self.set(point.latitude, point.longitude)
+        return
+        # with open(filename) as f:
+        #     gpx = gpxpy.parse(f)
+        #
+        # last_time = None
+        # for track in gpx.tracks:
+        #     for segment in track.segments:
+        #         for point in segment.points:
+        #             if last_time is not None:
+        #                 duration = (point.time - last_time).total_seconds()
+        #                 if duration >= 0:
+        #                     if not disable_sleep:
+        #                         self.logger.info(f'waiting for {duration}s')
+        #                         time.sleep(duration)
+        #             last_time = point.time
+        #             self.logger.info(f'set location to {point.latitude} {point.longitude}')
+        #             self.set(point.latitude, point.longitude)

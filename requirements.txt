@@ -6,7 +6,6 @@ bpylist2>=4.0.1
 hexdump
 arrow
 daemonize
-gpxpy
 pykdebugparser>=1.2.4
 pyusb>=1.2.1
 tqdm

@@ -4,21 +4,21 @@ import json
 from typing import List, TextIO
 import sys
 import click
-from cryptography.hazmat.primitives.asymmetric import rsa
 
 from pymobiledevice3.cli.cli_common import RSDCommand, print_json, prompt_device_list
 from pymobiledevice3.exceptions import NoDeviceConnectedError
 from pymobiledevice3.remote.bonjour import get_remoted_addresses
 from pymobiledevice3.remote.remote_service_discovery import RSD_PORT, RemoteServiceDiscoveryService
-from pymobiledevice3.remote.utils import resume_remoted_if_required, stop_remoted, stop_remoted_if_required
+from pymobiledevice3.remote.utils import stop_remoted
 
 logger = logging.getLogger(__name__)
 
 try:
-    from pymobiledevice3.remote.core_device_tunnel_service import create_core_device_tunnel_service
+    from pymobiledevice3.remote.core_device_tunnel_service import start_quic_tunnel
 except ImportError:
+    start_quic_tunnel = None
     logger.warning(
-        'create_core_device_tunnel_service failed to be imported. Some feature may not work.\n'
+        'start_quic_tunnel failed to be imported. Some feature may not work.\n'
         'You can debug this by trying the import yourself:\n\n'
         'from pymobiledevice3.remote.core_device_tunnel_service import create_core_device_tunnel_service')
 
@@ -69,45 +69,43 @@ def rsd_info(service_provider: RemoteServiceDiscoveryService, color: bool):
     print_json(service_provider.peer_info, colored=color)
 
 
-async def start_quic_tunnel(service_provider: RemoteServiceDiscoveryService, secrets: TextIO,
-                            script_mode: bool = False) -> None:
-    private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+async def tunnel_task(service_provider: RemoteServiceDiscoveryService, secrets: TextIO,
+                      script_mode: bool = False) -> None:
+    if start_quic_tunnel is None:
+        raise NotImplementedError('failed to start the QUIC tunnel on your platform')
 
-    stop_remoted_if_required()
-    with create_core_device_tunnel_service(service_provider, autopair=True) as service:
-        async with service.start_quic_tunnel(private_key, secrets_log_file=secrets) as tunnel_result:
-            data = {'cmd': 'start_quic_tunnel',
-                    'UDID': f'{service_provider.udid}',
-                    'rsd_address': f'{tunnel_result.address}',
-                    'rsd_port': f'{tunnel_result.port}',
-                    }
-            json_str = json.dumps(data)
-            print(json_str, flush=True)
-            resume_remoted_if_required()
-            # if script_mode:
-            #     print(f'{tunnel_result.address} {tunnel_result.port}')
-            # else:
-            #     if secrets is not None:
-            #         print(click.style('Secrets: ', bold=True, fg='magenta') +
-            #               click.style(secrets.name, bold=True, fg='white'))
-            #     print(click.style('UDID: ', bold=True, fg='yellow') +
-            #           click.style(service_provider.udid, bold=True, fg='white'))
-            #     print(click.style('ProductType: ', bold=True, fg='yellow') +
-            #           click.style(service_provider.product_type, bold=True, fg='white'))
-            #     print(click.style('ProductVersion: ', bold=True, fg='yellow') +
-            #           click.style(service_provider.product_version, bold=True, fg='white'))
-            #     print(click.style('Interface: ', bold=True, fg='yellow') +
-            #           click.style(tunnel_result.interface, bold=True, fg='white'))
-            #     print(click.style('RSD Address: ', bold=True, fg='yellow') +
-            #           click.style(tunnel_result.address, bold=True, fg='white'))
-            #     print(click.style('RSD Port: ', bold=True, fg='yellow') +
-            #           click.style(tunnel_result.port, bold=True, fg='white'))
-            #     print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
-            #           click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
-            while True:
-                # wait user input while the asyncio tasks execute
-                # 需要保留连接才能修改定位
-                await asyncio.sleep(.5)
+    async with start_quic_tunnel(service_provider, secrets=secrets) as tunnel_result:
+        data = {'cmd': 'start_quic_tunnel',
+                'UDID': f'{service_provider.udid}',
+                'rsd_address': f'{tunnel_result.address}',
+                'rsd_port': f'{tunnel_result.port}',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
+        # if script_mode:
+        #     print(f'{tunnel_result.address} {tunnel_result.port}')
+        # else:
+        #     if secrets is not None:
+        #         print(click.style('Secrets: ', bold=True, fg='magenta') +
+        #               click.style(secrets.name, bold=True, fg='white'))
+        #     print(click.style('UDID: ', bold=True, fg='yellow') +
+        #           click.style(service_provider.udid, bold=True, fg='white'))
+        #     print(click.style('ProductType: ', bold=True, fg='yellow') +
+        #           click.style(service_provider.product_type, bold=True, fg='white'))
+        #     print(click.style('ProductVersion: ', bold=True, fg='yellow') +
+        #           click.style(service_provider.product_version, bold=True, fg='white'))
+        #     print(click.style('Interface: ', bold=True, fg='yellow') +
+        #           click.style(tunnel_result.interface, bold=True, fg='white'))
+        #     print(click.style('RSD Address: ', bold=True, fg='yellow') +
+        #           click.style(tunnel_result.address, bold=True, fg='white'))
+        #     print(click.style('RSD Port: ', bold=True, fg='yellow') +
+        #           click.style(tunnel_result.port, bold=True, fg='white'))
+        #     print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
+        #           click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
+
+        while True:
+            # wait user input while the asyncio tasks execute
+            await asyncio.sleep(.5)
 
 
 @remote_cli.command('start-quic-tunnel')
@@ -141,7 +139,7 @@ def cli_start_quic_tunnel(udid: str, secrets: TextIO, script_mode: bool):
     if udid is not None and rsd.udid != udid:
         print(f'start quic tunnel no device connect rsd uid:{rsd.udid} pass:{udid}', flush=True)
         raise NoDeviceConnectedError()
-    asyncio.run(start_quic_tunnel(rsd, secrets, script_mode=script_mode), debug=True)
+    asyncio.run(tunnel_task(rsd, secrets, script_mode), debug=True)
 
 @remote_cli.command('service', cls=RSDCommand)
 @click.argument('service_name')

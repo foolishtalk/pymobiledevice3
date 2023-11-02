@@ -103,26 +103,27 @@ async def tunnel_task(
         }
         json_str = json.dumps(data)
         print(json_str, flush=True)
-        # if script_mode:
-        #     print(f'{tunnel_result.address} {tunnel_result.port}')
-        # else:
-        #     if secrets is not None:
-        #         print(click.style('Secrets: ', bold=True, fg='magenta') +
-        #               click.style(secrets.name, bold=True, fg='white'))
-        #     print(click.style('UDID: ', bold=True, fg='yellow') +
-        #           click.style(service_provider.udid, bold=True, fg='white'))
-        #     print(click.style('ProductType: ', bold=True, fg='yellow') +
-        #           click.style(service_provider.product_type, bold=True, fg='white'))
-        #     print(click.style('ProductVersion: ', bold=True, fg='yellow') +
-        #           click.style(service_provider.product_version, bold=True, fg='white'))
-        #     print(click.style('Interface: ', bold=True, fg='yellow') +
-        #           click.style(tunnel_result.interface, bold=True, fg='white'))
-        #     print(click.style('RSD Address: ', bold=True, fg='yellow') +
-        #           click.style(tunnel_result.address, bold=True, fg='white'))
-        #     print(click.style('RSD Port: ', bold=True, fg='yellow') +
-        #           click.style(tunnel_result.port, bold=True, fg='white'))
-        #     print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
-        #           click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
+        if script_mode:
+            print(f'{tunnel_result.address} {tunnel_result.port}')
+        else:
+            if secrets is not None:
+                print(click.style('Secrets: ', bold=True, fg='magenta') +
+                      click.style(secrets.name, bold=True, fg='white'))
+            print(click.style('UDID: ', bold=True, fg='yellow') +
+                  click.style(service_provider.udid, bold=True, fg='white'))
+            print(click.style('ProductType: ', bold=True, fg='yellow') +
+                  click.style(service_provider.product_type, bold=True, fg='white'))
+            print(click.style('ProductVersion: ', bold=True, fg='yellow') +
+                  click.style(service_provider.product_version, bold=True, fg='white'))
+            print(click.style('Interface: ', bold=True, fg='yellow') +
+                  click.style(tunnel_result.interface, bold=True, fg='white'))
+            print(click.style('RSD Address: ', bold=True, fg='yellow') +
+                  click.style(tunnel_result.address, bold=True, fg='white'))
+            print(click.style('RSD Port: ', bold=True, fg='yellow') +
+                  click.style(tunnel_result.port, bold=True, fg='white'))
+            print(click.style('Use the follow connection option:\n', bold=True, fg='yellow') +
+                  click.style(f'--rsd {tunnel_result.address} {tunnel_result.port}', bold=True, fg='cyan'))
+        sys.stdout.flush()
 
         await tunnel_result.client.wait_closed()
         logger.info('tunnel was closed')

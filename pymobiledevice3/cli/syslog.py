@@ -8,7 +8,7 @@ import click
 
 from pymobiledevice3.cli.cli_common import Command
 from pymobiledevice3.lockdown import LockdownClient
-from pymobiledevice3.services.os_trace import OsTraceService
+from pymobiledevice3.services.os_trace import OsTraceService, SyslogLogLevel
 from pymobiledevice3.services.syslog import SyslogService
 
 logger = logging.getLogger(__name__)
@@ -35,15 +35,16 @@ def syslog_live_old(service_provider: LockdownClient):
 
 def format_line(color, pid, syslog_entry, include_label):
     log_level_colors = {
-        'Notice': 'white',
-        'Error': 'red',
-        'Fault': 'red',
-        'Warning': 'yellow',
+        SyslogLogLevel.NOTICE.name: 'white',
+        SyslogLogLevel.INFO.name: 'white',
+        SyslogLogLevel.DEBUG.name: 'green',
+        SyslogLogLevel.ERROR.name: 'red',
+        SyslogLogLevel.FAULT.name: 'red',
     }
 
     syslog_pid = syslog_entry.pid
     timestamp = syslog_entry.timestamp
-    level = syslog_entry.level
+    level = syslog_entry.level.name
     filename = syslog_entry.filename
     image_name = posixpath.basename(syslog_entry.image_name)
     message = syslog_entry.message
@@ -55,6 +56,17 @@ def format_line(color, pid, syslog_entry, include_label):
 
     if syslog_entry.label is not None:
         label = f'[{syslog_entry.label.subsystem}][{syslog_entry.label.category}]'
+
+    if color:
+        timestamp = colored(str(timestamp), 'green')
+        process_name = colored(process_name, 'magenta')
+        if len(image_name) > 0:
+            image_name = colored(image_name, 'magenta')
+        syslog_pid = colored(syslog_pid, 'cyan')
+        log_level_color = log_level_colors[level]
+        level = colored(level, log_level_color)
+        label = colored(label, 'cyan')
+        message = colored(message, log_level_color)
 
     line_format = '{timestamp} {process_name}{{{image_name}}}[{pid}] <{level}>: {message}'
 

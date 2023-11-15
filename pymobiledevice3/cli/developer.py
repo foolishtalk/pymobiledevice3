@@ -13,8 +13,7 @@ from typing import List, Optional
 import click
 from click.exceptions import MissingParameter, UsageError
 from packaging.version import Version
-# from pykdebugparser.pykdebugparser import PyKdebugParser
-# from termcolor import colored
+from pykdebugparser.pykdebugparser import PyKdebugParser
 
 import pymobiledevice3
 from pymobiledevice3.cli.cli_common import BASED_INT, Command, RSDCommand, default_json_encoder, print_json, wait_return

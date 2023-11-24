@@ -332,3 +332,8 @@ class AccessDeniedError(PyMobileDevice3Exception):
 
 class NoSuchBuildIdentityError(PyMobileDevice3Exception):
     pass
+
+
+class MobileActivationException(PyMobileDevice3Exception):
+    """ Mobile activation can not be done """
+    pass

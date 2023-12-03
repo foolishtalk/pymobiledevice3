@@ -65,7 +65,8 @@ CLI_GROUPS = {
     'status': 'status',
     'syslog': 'syslog',
     'usbmux': 'usbmux',
-    'webinspector': 'webinspector'
+    'webinspector': 'webinspector',
+    'version': 'version',
 }
 
 

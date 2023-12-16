@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass
 from typing import List, Mapping, Optional, Tuple, Union
-
+import json
 from pymobiledevice3.exceptions import InvalidServiceError, NoDeviceConnectedError, PyMobileDevice3Exception, \
     StartServiceError
 from pymobiledevice3.lockdown import LockdownClient, create_using_remote
@@ -52,6 +52,13 @@ class RemoteServiceDiscoveryService(LockdownServiceProvider):
         try:
             self.lockdown = create_using_remote(self.start_lockdown_service('com.apple.mobile.lockdown.remote.trusted'))
         except InvalidServiceError:
+            data = {'cmd': 'mounter_auto_mount',
+                    'UDID': f'{self.udid}',
+                    'code': 6,
+                    'msg': 'Failed to start service',
+                    }
+            json_str = json.dumps(data)
+            print(json_str, flush=True)
             self.lockdown = create_using_remote(
                 self.start_lockdown_service('com.apple.mobile.lockdown.remote.untrusted'))
         self.all_values = self.lockdown.all_values

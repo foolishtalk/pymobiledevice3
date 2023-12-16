@@ -1,4 +1,5 @@
 import hashlib
+import json
 import plistlib
 from pathlib import Path
 from typing import List, Mapping
@@ -32,7 +33,17 @@ class MobileImageMounterService(LockdownService):
         if self.is_image_mounted(self.IMAGE_TYPE):
             raise AlreadyMountedError()
         if Version(self.lockdown.product_version).major >= 16 and not self.lockdown.developer_mode_status:
+            self.output_developer_mode_status()
             raise DeveloperModeIsNotEnabledError()
+
+    def output_developer_mode_status(self):
+        data = {'cmd': 'developer_mode_status',
+                'UDID': f'{self.lockdown.udid}',
+                'code': 1,
+                'msg': 'DeveloperMode is not enabled',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
 
     def copy_devices(self) -> List[Mapping]:
         """ Copy mounted devices list. """
@@ -94,6 +105,7 @@ class MobileImageMounterService(LockdownService):
         response = self.service.send_recv_plist(request)
 
         if 'Developer mode is not enabled' in response.get('DetailedError', ''):
+            self.output_developer_mode_status()
             raise DeveloperModeIsNotEnabledError()
 
         status = response.get('Status')
@@ -352,4 +364,4 @@ def auto_mount(lockdown: LockdownServiceProvider, path: str = None, xcode: str =
     if Version(lockdown.product_version) < Version('17.0'):
         auto_mount_developer(lockdown, xcode=xcode, version=version)
     else:
-        auto_mount_personalized(lockdown,path)
+        auto_mount_personalized(lockdown, path)

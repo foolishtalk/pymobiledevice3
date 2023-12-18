@@ -11,7 +11,7 @@ pyinstaller --onedir \
 --clean \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \
---add-data ../pymobiledevice3/resources/webinspector/*:pymobiledevice3/resources/webinspector/ \
+--add-data ../pymobiledevice3/resources/webinspector/*:resources/webinspector/ \
 --copy-metadata pyimg4 \
 ../pymobiledevice3/__main__.py
 #codesign --force --verify --verbose=4 --sign "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" ./dist/__main__.app

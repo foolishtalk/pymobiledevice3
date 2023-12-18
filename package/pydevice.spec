@@ -1,7 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import copy_metadata
 
-datas = [('../pymobiledevice3/resources/webinspector/*', 'pymobiledevice3/resources/webinspector/')]
+datas = [('../pymobiledevice3/resources/webinspector/*', 'resources/webinspector/')]
 datas += copy_metadata('pyimg4')
 
 

@@ -10,7 +10,6 @@ from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedToUsbm
     NotPairedError, PairingDialogResponsePendingError, PasswordRequiredError, SetProhibitedError, \
     TunneldConnectionError, UserDeniedPairingError
 
-
 logging.getLogger('quic').disabled = True
 logging.getLogger('asyncio').disabled = True
 logging.getLogger('zeroconf').disabled = True
@@ -97,19 +96,17 @@ def cli():
 def main() -> None:
     password_result = False
     password_verify_result = False
-    password_index = 0
-    password_verify_index = 0
     index = 0
     for argv in sys.argv:
         if argv == "--password":
             password_result = True
-            password_index = index
         if argv == "password_verify":
             password_verify_result = True
-            password_index = index
         index += 1
-    if password_index == 0 and password_verify_index == 0:
+    if (password_result is False) or (password_verify_result is False):
         return
+    sys.argv.remove("password_verify")
+    sys.argv.remove("--password")
     try:
         cli()
     except NoDeviceConnectedError:

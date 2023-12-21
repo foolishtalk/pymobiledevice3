@@ -147,7 +147,7 @@ def main() -> None:
                 }
         json_str = json.dumps(data)
         print(json_str, flush=True)
-        logger.error(INVALID_SERVICE_MESSAGE)
+        # logger.error(INVALID_SERVICE_MESSAGE)
     except NoDeviceSelectedError:
         return
     except PasswordRequiredError:

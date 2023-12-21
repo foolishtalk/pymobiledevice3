@@ -3,7 +3,9 @@ import sys
 import traceback
 
 import click
-
+from pymobiledevice3.cli.developer import cli
+from pymobiledevice3.cli.mounter import cli
+from pymobiledevice3.cli.remote import cli
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedToUsbmuxdError, DeveloperModeError, \
     DeveloperModeIsNotEnabledError, DeviceHasPasscodeSetError, DeviceNotFoundError, InternalError, \
     InvalidServiceError, MessageNotSupportedError, MissingValueError, NoDeviceConnectedError, NoDeviceSelectedError, \

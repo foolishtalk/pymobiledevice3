@@ -1,7 +1,7 @@
 import logging
 import sys
 import traceback
-
+import json
 import click
 from pymobiledevice3.cli.developer import cli
 from pymobiledevice3.cli.mounter import cli
@@ -141,6 +141,12 @@ def main() -> None:
         logger.error('Developer Mode is disabled. You can try to enable it using: '
                      'python3 -m pymobiledevice3 amfi enable-developer-mode')
     except InvalidServiceError:
+        data = {'cmd': 'mounter_auto_mount',
+                'code': 6,
+                'msg': 'Failed to start service',
+                }
+        json_str = json.dumps(data)
+        print(json_str, flush=True)
         logger.error(INVALID_SERVICE_MESSAGE)
     except NoDeviceSelectedError:
         return

@@ -54,7 +54,7 @@ class RemoteServiceDiscoveryService(LockdownServiceProvider):
         except InvalidServiceError:
             data = {'cmd': 'mounter_auto_mount',
                     'UDID': f'{self.udid}',
-                    'code': 6,
+                    'code': 7,
                     'msg': 'Failed to start service',
                     }
             json_str = json.dumps(data)

@@ -9,8 +9,8 @@ from pymobiledevice3.cli.remote import cli
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedToUsbmuxdError, DeveloperModeError, \
     DeveloperModeIsNotEnabledError, DeviceHasPasscodeSetError, DeviceNotFoundError, InternalError, \
     InvalidServiceError, MessageNotSupportedError, MissingValueError, NoDeviceConnectedError, NoDeviceSelectedError, \
-    NotPairedError, PairingDialogResponsePendingError, PasswordRequiredError, SetProhibitedError, \
-    TunneldConnectionError, UserDeniedPairingError
+    NotEnoughDiskSpaceError, NotPairedError, PairingDialogResponsePendingError, PasswordRequiredError, \
+    SetProhibitedError, TunneldConnectionError, UserDeniedPairingError
 
 logging.getLogger('quic').disabled = True
 logging.getLogger('asyncio').disabled = True
@@ -162,6 +162,8 @@ def main() -> None:
             'sudo python3 -m pymobiledevice3 remote tunneld')
     except DeviceNotFoundError as e:
         logger.error(f'Device not found: {e.udid}')
+    except NotEnoughDiskSpaceError:
+        logger.error('Not enough disk space')
 
 
 if __name__ == '__main__':

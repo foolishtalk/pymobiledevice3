@@ -5,13 +5,30 @@ rm __main__.spec
 #--target-architecture x86_64 \
 
 
+#pyinstaller --onedir \
+#--osx-bundle-identifier com.karim.pymobile \
+#--name "pydevice" \
+#--clean \
+#--codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
+#--osx-entitlements-file ./pymobile.entitlements \
+#--add-data ../pymobiledevice3/resources/webinspector/*:resources/webinspector/ \
+#--copy-metadata pyimg4 \
+#../pymobiledevice3/__main__.py
+
 pyinstaller --onedir \
 --osx-bundle-identifier com.karim.pymobile \
 --name "pydevice" \
 --clean \
+--exclude-module gpxpy \
+--exclude-module pygments \
+--exclude-module termcolor \
+--exclude-module coloredlogs \
+--exclude-module inquirer3 \
+--exclude-module IPython \
+--exclude-module pycrashreport \
+--exclude-module pyreadline3 \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \
---add-data ../pymobiledevice3/resources/webinspector/*:resources/webinspector/ \
 --copy-metadata pyimg4 \
 ../pymobiledevice3/__main__.py
 #codesign --force --verify --verbose=4 --sign "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" ./dist/__main__.app

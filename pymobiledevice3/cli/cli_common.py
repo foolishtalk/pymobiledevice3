@@ -9,10 +9,10 @@ from typing import Callable, List, Mapping, Optional, Tuple
 
 import click
 import hexdump
-import inquirer3
+# import inquirer3
 from click import Option, UsageError
-from inquirer3.themes import GreenPassion
-from pygments import formatters, highlight, lexers
+# from inquirer3.themes import GreenPassion
+# from pygments import formatters, highlight, lexers
 
 from pymobiledevice3.exceptions import AccessDeniedError, DeviceNotFoundError, NoDeviceConnectedError, \
     NoDeviceSelectedError
@@ -67,20 +67,20 @@ def default_json_encoder(obj):
 
 def print_json(buf, colored=True, default=default_json_encoder):
     formatted_json = json.dumps(buf, sort_keys=True, indent=4, default=default)
-    if colored:
-        colorful_json = highlight(formatted_json, lexers.JsonLexer(),
-                                  formatters.TerminalTrueColorFormatter(style='stata-dark'))
-        print(colorful_json)
-    else:
-        print(formatted_json)
+    # if colored:
+    #     colorful_json = highlight(formatted_json, lexers.JsonLexer(),
+    #                               formatters.TerminalTrueColorFormatter(style='stata-dark'))
+    #     print(colorful_json)
+    # else:
+    #     print(formatted_json)
 
 
 def print_hex(data, colored=True):
     hex_dump = hexdump.hexdump(data, result='return')
-    if colored:
-        print(highlight(hex_dump, lexers.HexdumpLexer(), formatters.TerminalTrueColorFormatter(style='native')))
-    else:
-        print(hex_dump, end='\n\n')
+    # if colored:
+    #     print(highlight(hex_dump, lexers.HexdumpLexer(), formatters.TerminalTrueColorFormatter(style='native')))
+    # else:
+    #     print(hex_dump, end='\n\n')
 
 
 def set_verbosity(ctx, param, value):

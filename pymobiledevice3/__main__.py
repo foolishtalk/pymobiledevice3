@@ -3,6 +3,9 @@ import sys
 import traceback
 import json
 import click
+import zeroconf._utils.ipaddress
+import zeroconf._handlers.answers
+# import zeroconf
 from pymobiledevice3.cli.developer import cli
 from pymobiledevice3.cli.mounter import cli
 from pymobiledevice3.cli.remote import cli

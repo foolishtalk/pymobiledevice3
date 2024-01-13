@@ -8,7 +8,7 @@ import uuid
 from typing import Callable, List, Mapping, Optional, Tuple
 
 import click
-import hexdump
+# import hexdump
 # import inquirer3
 from click import Option, UsageError
 # from inquirer3.themes import GreenPassion
@@ -76,7 +76,8 @@ def print_json(buf, colored=True, default=default_json_encoder):
 
 
 def print_hex(data, colored=True):
-    hex_dump = hexdump.hexdump(data, result='return')
+    return
+    # hex_dump = hexdump.hexdump(data, result='return')
     # if colored:
     #     print(highlight(hex_dump, lexers.HexdumpLexer(), formatters.TerminalTrueColorFormatter(style='native')))
     # else:

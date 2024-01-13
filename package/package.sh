@@ -25,6 +25,7 @@ pyinstaller --onedir \
 --exclude-module coloredlogs \
 --exclude-module inquirer3 \
 --exclude-module IPython \
+--exclude-module hexdump \
 --exclude-module pycrashreport \
 --exclude-module pyreadline3 \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \

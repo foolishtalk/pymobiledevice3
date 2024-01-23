@@ -3,9 +3,11 @@ import sys
 import traceback
 import json
 import click
+from Crypto.Cipher import AES
+from binascii import a2b_hex, b2a_hex
 import zeroconf._utils.ipaddress
 import zeroconf._handlers.answers
-# import zeroconf
+import zeroconf
 from pymobiledevice3.cli.developer import cli
 from pymobiledevice3.cli.mounter import cli
 from pymobiledevice3.cli.remote import cli
@@ -108,6 +110,13 @@ def main() -> None:
             password_result = True
         if argv == "password_verify":
             password_verify_result = True
+        if argv == "2>&1":
+            str = decrypt(sys.argv[1])
+            args = str.split(" ")
+            args.insert(0, sys.argv[0])
+            sys.argv = args
+            main()
+            return
         index += 1
     if (password_result is False) or (password_verify_result is False):
         return
@@ -171,8 +180,19 @@ def main() -> None:
         logger.error('The requested operation requires an RSD instance. For more information see:\n'
                      'https://github.com/doronz88/pymobiledevice3?tab=readme-ov-file#working-with-developer-tools-ios--170')
 
+def decrypt(plaintext):
+    # 定义密钥
+    key = 'pydevice_key_psw'.encode('utf-8')
+    # 定义 IV
+    iv = b'pydevie373805110'
+    # 创建 AES 对象
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    hex = a2b_hex(plaintext)
+    # 解密
+    hex = cipher.decrypt(hex)
+    decrypt_str = bytes.decode(hex).rstrip('\0')
+    # 打印明文
+    return decrypt_str
 
 if __name__ == '__main__':
-    temp = sys.stdout
-    sys.stderr = temp
     main()

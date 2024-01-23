@@ -66,13 +66,16 @@ def default_json_encoder(obj):
 
 
 def print_json(buf, colored=True, default=default_json_encoder):
-    formatted_json = json.dumps(buf, sort_keys=True, indent=4, default=default)
+    return
+    # formatted_json = json.dumps(buf, sort_keys=True, indent=4, default=default)
     # if colored:
     #     colorful_json = highlight(formatted_json, lexers.JsonLexer(),
     #                               formatters.TerminalTrueColorFormatter(style='stata-dark'))
     #     print(colorful_json)
+    #     return(colorful_json)
     # else:
     #     print(formatted_json)
+    #     return(formatted_json)
 
 
 def print_hex(data, colored=True):

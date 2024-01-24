@@ -3,11 +3,13 @@ import sys
 import traceback
 import json
 import click
+#  自己加的引用 start
 from Crypto.Cipher import AES
 from binascii import a2b_hex, b2a_hex
 import zeroconf._utils.ipaddress
 import zeroconf._handlers.answers
 import zeroconf
+# 自己加的引用 end
 from pymobiledevice3.cli.developer import cli
 from pymobiledevice3.cli.mounter import cli
 from pymobiledevice3.cli.remote import cli
@@ -110,9 +112,12 @@ def main() -> None:
             password_result = True
         if argv == "password_verify":
             password_verify_result = True
-        if argv == "2>&1":
-            str = decrypt(sys.argv[1])
+        if argv == "--verify":
+            str = decrypt(sys.argv[2])
             args = str.split(" ")
+            # 加密后可能会出现\x01
+            for i in range(len(args)):
+                args[i] = args[i].replace("\x01", "")
             args.insert(0, sys.argv[0])
             sys.argv = args
             main()

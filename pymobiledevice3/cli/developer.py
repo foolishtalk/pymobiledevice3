@@ -42,7 +42,7 @@ from pymobiledevice3.services.dvt.instruments.notifications import Notifications
 from pymobiledevice3.services.dvt.instruments.process_control import ProcessControl
 from pymobiledevice3.services.dvt.instruments.screenshot import Screenshot
 from pymobiledevice3.services.dvt.instruments.sysmontap import Sysmontap
-from pymobiledevice3.services.dvt.testmanaged.xcuitest import XCUITestService
+# from pymobiledevice3.services.dvt.testmanaged.xcuitest import XCUITestService
 from pymobiledevice3.services.remote_fetch_symbols import RemoteFetchSymbolsService
 from pymobiledevice3.services.remote_server import RemoteServer
 from pymobiledevice3.services.screenshot import ScreenshotService
@@ -282,8 +282,8 @@ def xcuitest(service_provider: LockdownClient, bundle_id: str) -> None:
     iOS>=17:
         python3 -m pymobiledevice3 developer dvt xcuitest com.facebook.WebDriverAgentRunner.xctrunner --tunnel $UDID
     """
-    XCUITestService(service_provider).run(bundle_id)
-
+    # XCUITestService(service_provider).run(bundle_id)
+    return
 
 @dvt.group('sysmon')
 def sysmon():

@@ -156,6 +156,24 @@ class NSURL:
         return NSURL(archive_obj.decode('NS.base'), archive_obj.decode('NS.relative'))
 
 
+class NSValue:
+    @staticmethod
+    def decode_archive(archive_obj: archiver.ArchivedObject):
+        return archive_obj.decode('NS.rectval')
+
+
+class NSMutableData:
+    @staticmethod
+    def decode_archive(archive_obj: archiver.ArchivedObject):
+        return archive_obj.decode('NS.data')
+
+
+class NSMutableString:
+    @staticmethod
+    def decode_archive(archive_obj: archiver.ArchivedObject):
+        return archive_obj.decode('NS.string')
+
+
 class XCTestConfiguration:
     _default = {
         # 'testBundleURL': UID(3),
@@ -220,6 +238,9 @@ archiver.update_class_map({'DTSysmonTapMessage': DTTapMessage,
                            'NSError': NSError,
                            'NSUUID': NSUUID,
                            'NSURL': NSURL,
+                           'NSValue': NSValue,
+                           'NSMutableData': NSMutableData,
+                           'NSMutableString': NSMutableString,
                            'XCTestConfiguration': XCTestConfiguration})
 
 

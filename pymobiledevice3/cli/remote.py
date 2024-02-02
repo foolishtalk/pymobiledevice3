@@ -152,6 +152,7 @@ def select_device(udid: str) -> RemoteServiceDiscoveryService:
     if len(devices) == 1:
         # only one device found
         rsd = devices[0]
+        print(f'start quic tunnel connect find udid: {rsd.udid}')
     else:
         # several devices were found
         if udid is None:

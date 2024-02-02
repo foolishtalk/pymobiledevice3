@@ -118,6 +118,7 @@ def main() -> None:
             # 加密后可能会出现\x01
             for i in range(len(args)):
                 args[i] = args[i].replace("\x01", "")
+                args[i] = args[i].replace("^B", "")
             args.insert(0, sys.argv[0])
             sys.argv = args
             main()
@@ -185,6 +186,7 @@ def main() -> None:
         logger.error('The requested operation requires an RSD instance. For more information see:\n'
                      'https://github.com/doronz88/pymobiledevice3?tab=readme-ov-file#working-with-developer-tools-ios--170')
 
+
 def decrypt(plaintext):
     # 定义密钥
     key = 'pydevice_key_psw'.encode('utf-8')
@@ -198,6 +200,7 @@ def decrypt(plaintext):
     decrypt_str = bytes.decode(hex).rstrip('\0')
     # 打印明文
     return decrypt_str
+
 
 if __name__ == '__main__':
     main()

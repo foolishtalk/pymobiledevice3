@@ -9,10 +9,12 @@ from binascii import a2b_hex, b2a_hex
 import zeroconf._utils.ipaddress
 import zeroconf._handlers.answers
 import zeroconf
+from pymobiledevice3.cli.developer import dvt_simulate_location_set
+from pymobiledevice3.cli.developer import dvt_simulate_location_clear
+from pymobiledevice3.cli.mounter import mounter_auto_mount
+from pymobiledevice3.cli.remote import cli_start_tunnel
 # 自己加的引用 end
-from pymobiledevice3.cli.developer import cli
-from pymobiledevice3.cli.mounter import cli
-from pymobiledevice3.cli.remote import cli
+
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedToUsbmuxdError, DeveloperModeError, \
     DeveloperModeIsNotEnabledError, DeviceHasPasscodeSetError, DeviceNotFoundError, InternalError, \
     InvalidServiceError, MessageNotSupportedError, MissingValueError, NoDeviceConnectedError, NoDeviceSelectedError, \

@@ -41,8 +41,8 @@ def mounter():
     pass
 
 
-@mounter.command('list', cls=Command)
-@click.option('--color/--no-color', default=True)
+# @mounter.command('list', cls=Command)
+# @click.option('--color/--no-color', default=True)
 def mounter_list(service_provider: LockdownClient, color):
     """ list all mounted images """
     output = []
@@ -57,9 +57,9 @@ def mounter_list(service_provider: LockdownClient, color):
     print_json(output, colored=color)
 
 
-@mounter.command('lookup', cls=Command)
-@click.option('--color/--no-color', default=True)
-@click.argument('image_type')
+# @mounter.command('lookup', cls=Command)
+# @click.option('--color/--no-color', default=True)
+# @click.argument('image_type')
 def mounter_lookup(service_provider: LockdownClient, color, image_type):
     """ lookup mounter image type """
     try:
@@ -69,8 +69,8 @@ def mounter_lookup(service_provider: LockdownClient, color, image_type):
         logger.error(f'Disk image of type: {image_type} is not mounted')
 
 
-@mounter.command('umount-developer', cls=Command)
-@catch_errors
+# @mounter.command('umount-developer', cls=Command)
+# @catch_errors
 def mounter_umount_developer(service_provider: LockdownClient):
     """ unmount Developer image """
     try:
@@ -80,8 +80,8 @@ def mounter_umount_developer(service_provider: LockdownClient):
         logger.error('Developer image isn\'t currently mounted')
 
 
-@mounter.command('umount-personalized', cls=Command)
-@catch_errors
+# @mounter.command('umount-personalized', cls=Command)
+# @catch_errors
 def mounter_umount_personalized(service_provider: LockdownClient):
     """ unmount Personalized image """
     try:
@@ -91,21 +91,21 @@ def mounter_umount_personalized(service_provider: LockdownClient):
         logger.error('Personalized image isn\'t currently mounted')
 
 
-@mounter.command('mount-developer', cls=Command)
-@click.argument('image', type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('signature', type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@catch_errors
+# @mounter.command('mount-developer', cls=Command)
+# @click.argument('image', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# @click.argument('signature', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# @catch_errors
 def mounter_mount_developer(service_provider: LockdownClient, image: str, signature: str):
     """ mount developer image """
     DeveloperDiskImageMounter(lockdown=service_provider).mount(Path(image), Path(signature))
     logger.info('Developer image mounted successfully')
 
 
-@mounter.command('mount-personalized', cls=Command)
-@click.argument('image', type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('trust-cache', type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@click.argument('build-manifest', type=click.Path(exists=True, file_okay=True, dir_okay=False))
-@catch_errors
+# @mounter.command('mount-personalized', cls=Command)
+# @click.argument('image', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# @click.argument('trust-cache', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# @click.argument('build-manifest', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+# @catch_errors
 def mounter_mount_personalized(service_provider: LockdownClient, image: str, trust_cache: str, build_manifest: str):
     """ mount personalized image """
     PersonalizedImageMounter(lockdown=service_provider).mount(Path(image), Path(build_manifest), Path(trust_cache))
@@ -171,30 +171,30 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
         print(json_str, flush=True)
 
 
-@mounter.command('query-developer-mode-status', cls=Command)
-@click.option('--color/--no-color', default=True)
+# @mounter.command('query-developer-mode-status', cls=Command)
+# @click.option('--color/--no-color', default=True)
 def mounter_query_developer_mode_status(service_provider: LockdownClient, color):
     """ Query developer mode status """
     print_json(MobileImageMounterService(lockdown=service_provider).query_developer_mode_status(), colored=color)
 
 
-@mounter.command('query-nonce', cls=Command)
-@click.option('--image-type')
-@click.option('--color/--no-color', default=True)
+# @mounter.command('query-nonce', cls=Command)
+# @click.option('--image-type')
+# @click.option('--color/--no-color', default=True)
 def mounter_query_nonce(service_provider: LockdownClient, image_type: str, color: bool):
     """ Query nonce """
     print_json(MobileImageMounterService(lockdown=service_provider).query_nonce(image_type), colored=color)
 
 
-@mounter.command('query-personalization-identifiers', cls=Command)
-@click.option('--color/--no-color', default=True)
+# @mounter.command('query-personalization-identifiers', cls=Command)
+# @click.option('--color/--no-color', default=True)
 def mounter_query_personalization_identifiers(service_provider: LockdownClient, color):
     """ Query personalization identifiers """
     print_json(MobileImageMounterService(lockdown=service_provider).query_personalization_identifiers(), colored=color)
 
 
-@mounter.command('query-personalization-manifest', cls=Command)
-@click.option('--color/--no-color', default=True)
+# @mounter.command('query-personalization-manifest', cls=Command)
+# @click.option('--color/--no-color', default=True)
 def mounter_query_personalization_manifest(service_provider: LockdownClient, color):
     """ Query personalization manifest """
     result = []
@@ -204,12 +204,12 @@ def mounter_query_personalization_manifest(service_provider: LockdownClient, col
     print_json(result, colored=color)
 
 
-@mounter.command('roll-personalization-nonce', cls=Command)
+# @mounter.command('roll-personalization-nonce', cls=Command)
 def mounter_roll_personalization_nonce(service_provider: LockdownClient):
     MobileImageMounterService(lockdown=service_provider).roll_personalization_nonce()
 
 
-@mounter.command('roll-cryptex-nonce', cls=Command)
+# @mounter.command('roll-cryptex-nonce', cls=Command)
 def mounter_roll_cryptex_nonce(service_provider: LockdownClient):
     """ Roll cryptex nonce (will reboot) """
     MobileImageMounterService(lockdown=service_provider).roll_cryptex_nonce()

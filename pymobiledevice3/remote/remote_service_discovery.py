@@ -53,18 +53,18 @@ class RemoteServiceDiscoveryService(LockdownServiceProvider):
         self.peer_info = self.service.receive_response()
         self.udid = self.peer_info['Properties']['UniqueDeviceID']
         self.product_type = self.peer_info['Properties']['ProductType']
-        try:
-            self.lockdown = create_using_remote(self.start_lockdown_service('com.apple.mobile.lockdown.remote.trusted'))
-        except InvalidServiceError:
-            data = {'cmd': 'mounter_auto_mount',
-                    'UDID': f'{self.udid}',
-                    'code': 7,
-                    'msg': 'Failed to start service',
-                    }
-            json_str = json.dumps(data)
-            print(json_str, flush=True)
-            self.lockdown = create_using_remote(
-                self.start_lockdown_service('com.apple.mobile.lockdown.remote.untrusted'))
+        # try:
+        #     self.lockdown = create_using_remote(self.start_lockdown_service('com.apple.mobile.lockdown.remote.trusted'))
+        # except InvalidServiceError:
+        #     data = {'cmd': 'mounter_auto_mount',
+        #             'UDID': f'{self.udid}',
+        #             'code': 7,
+        #             'msg': 'Failed to start service',
+        #             }
+        #     json_str = json.dumps(data)
+        #     print(json_str, flush=True)
+        self.lockdown = create_using_remote(
+            self.start_lockdown_service('com.apple.mobile.lockdown.remote.untrusted'))
         self.all_values = self.lockdown.all_values
         self.all_domains = self.lockdown.all_domains
 

@@ -47,13 +47,13 @@ def remote_cli():
     pass
 
 
-@remote_cli.command('tunneld', cls=BaseCommand)
-@click.option('--host', default=TUNNELD_DEFAULT_ADDRESS[0])
-@click.option('--port', type=click.INT, default=TUNNELD_DEFAULT_ADDRESS[1])
-@click.option('-d', '--daemonize', is_flag=True)
-@click.option('-p', '--protocol', type=click.Choice([e.value for e in TunnelProtocol]),
-              default=TunnelProtocol.QUIC.value)
-@sudo_required
+# @remote_cli.command('tunneld', cls=BaseCommand)
+# @click.option('--host', default=TUNNELD_DEFAULT_ADDRESS[0])
+# @click.option('--port', type=click.INT, default=TUNNELD_DEFAULT_ADDRESS[1])
+# @click.option('-d', '--daemonize', is_flag=True)
+# @click.option('-p', '--protocol', type=click.Choice([e.value for e in TunnelProtocol]),
+#               default=TunnelProtocol.QUIC.value)
+# @sudo_required
 def cli_tunneld(host: str, port: int, daemonize: bool, protocol: str):
     """ Start Tunneld service for remote tunneling """
     if not verify_tunnel_imports():
@@ -74,8 +74,8 @@ def cli_tunneld(host: str, port: int, daemonize: bool, protocol: str):
         tunneld_runner()
 
 
-@remote_cli.command('browse', cls=BaseCommand)
-@click.option('--color/--no-color', default=True)
+# @remote_cli.command('browse', cls=BaseCommand)
+# @click.option('--color/--no-color', default=True)
 def browse(color: bool):
     """ browse devices using bonjour """
     devices = []
@@ -88,8 +88,8 @@ def browse(color: bool):
     print_json(devices, colored=color)
 
 
-@remote_cli.command('rsd-info', cls=RSDCommand)
-@click.option('--color/--no-color', default=True)
+# @remote_cli.command('rsd-info', cls=RSDCommand)
+# @click.option('--color/--no-color', default=True)
 def rsd_info(service_provider: RemoteServiceDiscoveryService, color: bool):
     """ show info extracted from RSD peer """
     print_json(service_provider.peer_info, colored=color)
@@ -193,9 +193,9 @@ def cli_start_tunnel(udid: str, secrets: TextIO, script_mode: bool, max_idle_tim
                 debug=True)
 
 
-@remote_cli.command('delete-pair', cls=BaseCommand)
-@click.option('--udid', help='UDID for a specific device to delete the pairing record of')
-@sudo_required
+# @remote_cli.command('delete-pair', cls=BaseCommand)
+# @click.option('--udid', help='UDID for a specific device to delete the pairing record of')
+# @sudo_required
 def cli_delete_pair(udid: str):
     """ delete a pairing record """
     rsd = select_device(udid)
@@ -203,8 +203,8 @@ def cli_delete_pair(udid: str):
     pair_record_path.unlink()
 
 
-@remote_cli.command('service', cls=RSDCommand)
-@click.argument('service_name')
+# @remote_cli.command('service', cls=RSDCommand)
+# @click.argument('service_name')
 def cli_service(service_provider: RemoteServiceDiscoveryService, service_name: str):
     """ start an ipython shell for interacting with given service """
     with service_provider.start_remote_service(service_name) as service:

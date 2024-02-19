@@ -17,7 +17,7 @@ packaging~=23.2
 pygnuutils>=0.0.7
 cryptography>=41.0.1
 pycrashreport>=1.2.2
-fastapi[all]~=0.109.0
+fastapi[all]>=0.93.0
 uvicorn>=0.15.0
 starlette
 wsproto

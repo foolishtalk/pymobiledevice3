@@ -14,7 +14,7 @@ rm __main__.spec
 #--add-data ../pymobiledevice3/resources/webinspector/*:resources/webinspector/ \
 #--copy-metadata pyimg4 \
 #../pymobiledevice3/__main__.py
-
+export MACOSX_DEPLOYMENT_TARGET=10.14
 pyinstaller --onedir \
 --osx-bundle-identifier com.karim.pymobile \
 --name "pydevice" \

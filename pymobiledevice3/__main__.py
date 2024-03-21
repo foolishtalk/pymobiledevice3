@@ -119,8 +119,23 @@ def main() -> None:
             args = str.split(" ")
             # 加密后可能会出现\x01
             for i in range(len(args)):
-                args[i] = args[i].replace("\x01", "")
-                args[i] = args[i].replace("^B", "")
+                char = ""
+                for every_char in iter(args[i]):
+                    if every_char.isdigit():
+                        char = char + every_char
+                    elif every_char.isalpha():
+                        char = char + every_char
+                    elif every_char == ",":
+                        char = char + ","
+                    elif every_char == ".":
+                        char = char + "."
+                    elif every_char == "-":
+                        char = char + "-"
+                    elif every_char == "_":
+                        char = char + "_"
+                    else:
+                        break
+                args[i] = char
             args.insert(0, sys.argv[0])
             sys.argv = args
             main()

@@ -999,7 +999,7 @@ def dvt_simulate_location_set(service_provider: LockdownClient, latitude, longit
             coordinate = text.split(',')
             input_latitude = coordinate[0]
             input_longitude = coordinate[1]
-            print("simulate location set",flush=True)
+            print("simulate location set", flush=True)
             location.set(float(input_latitude), float(input_longitude))
 
 

@@ -171,8 +171,7 @@ def main() -> None:
                 'msg': 'Failed to start service',
                 }
         json_str = json.dumps(data)
-        kt_print(json_str)
-        # logger.error(INVALID_SERVICE_MESSAGE)
+        kt_print(json_str)        
     except NoDeviceSelectedError:
         return
     except PasswordRequiredError:

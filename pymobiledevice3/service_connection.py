@@ -60,12 +60,13 @@ def create_context(certfile, keyfile=None):
     return context
 
 
-class LockdownServiceConnection:
-    """ wrapper for usbmux tcp-relay connections """
+class ServiceConnection:
+    """ wrapper for tcp-relay connections """
 
     def __init__(self, sock: socket.socket, mux_device: MuxDevice = None):
         self.logger = logging.getLogger(__name__)
         self.socket = sock
+        self._offset = 0
 
         # usbmux connections contain additional information associated with the current connection
         self.mux_device = mux_device
@@ -74,22 +75,22 @@ class LockdownServiceConnection:
         self._writer = None  # type: Optional[asyncio.StreamWriter]
 
     @staticmethod
-    def create_using_tcp(hostname: str, port: int, keep_alive: bool = True) -> 'LockdownServiceConnection':
+    def create_using_tcp(hostname: str, port: int, keep_alive: bool = True) -> 'ServiceConnection':
         sock = socket.create_connection((hostname, port))
         if keep_alive:
             set_keepalive(sock)
-        return LockdownServiceConnection(sock)
+        return ServiceConnection(sock)
 
     @staticmethod
     def create_using_usbmux(udid: Optional[str], port: int, connection_type: str = None,
-                            usbmux_address: Optional[str] = None) -> 'LockdownServiceConnection':
+                            usbmux_address: Optional[str] = None) -> 'ServiceConnection':
         target_device = select_device(udid, connection_type=connection_type, usbmux_address=usbmux_address)
         if target_device is None:
             if udid:
                 raise ConnectionFailedError()
             raise NoDeviceConnectedError()
         sock = target_device.connect(port, usbmux_address=usbmux_address)
-        return LockdownServiceConnection(sock, mux_device=target_device)
+        return ServiceConnection(sock, mux_device=target_device)
 
     def setblocking(self, blocking: bool) -> None:
         self.socket.setblocking(blocking)
@@ -186,8 +187,20 @@ class LockdownServiceConnection:
 
     def shell(self) -> None:
         return
-        # IPython.embed(
-        #     header=highlight(SHELL_USAGE, lexers.PythonLexer(), formatters.TerminalTrueColorFormatter(style='native')),
-        #     user_ns={
-        #         'client': self,
-        #     })
+        IPython.embed(
+            header=highlight(SHELL_USAGE, lexers.PythonLexer(), formatters.TerminalTrueColorFormatter(style='native')),
+            user_ns={
+                'client': self,
+            })
+
+    def read(self, size: int) -> bytes:
+        result = self.recvall(size)
+        self._offset += size
+        return result
+
+    def write(self, data: bytes) -> None:
+        self.sendall(data)
+        self._offset += len(data)
+
+    def tell(self) -> int:
+        return self._offset

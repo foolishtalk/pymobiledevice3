@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import uuid
+from functools import wraps
 from typing import Callable, List, Mapping, Optional, Tuple
 
 import click
@@ -140,6 +141,7 @@ def is_admin_user() -> bool:
 
 
 def sudo_required(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         if not is_admin_user():
             raise AccessDeniedError()

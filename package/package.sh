@@ -28,6 +28,11 @@ pyinstaller --onedir \
 --exclude-module hexdump \
 --exclude-module pycrashreport \
 --exclude-module pyreadline3 \
+--hidden-import=ipsw_parser \
+--hidden-import=zeroconf \
+--hidden-import=pyimg4 \
+--hidden-import=zeroconf._utils.ipaddress \
+--hidden-import=zeroconf._handlers.answers \
 --codesign-identity "Developer ID Application: Ye Kun Zhang (J3BJ7G2PUN)" \
 --osx-entitlements-file ./pymobile.entitlements \
 --copy-metadata pyimg4 \

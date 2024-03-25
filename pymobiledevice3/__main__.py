@@ -6,9 +6,6 @@ import click
 #  自己加的引用 start
 from Crypto.Cipher import AES
 from binascii import a2b_hex, b2a_hex
-import zeroconf._utils.ipaddress
-import zeroconf._handlers.answers
-import zeroconf
 from pymobiledevice3.cli.developer import dvt_simulate_location_set
 from pymobiledevice3.cli.developer import dvt_simulate_location_clear
 from pymobiledevice3.cli.mounter import mounter_auto_mount

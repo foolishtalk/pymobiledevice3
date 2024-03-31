@@ -7,6 +7,7 @@ from urllib.error import URLError
 import click
 
 from pymobiledevice3.cli.cli_common import Command, print_json
+from pymobiledevice3.cli.ktprint import kt_print
 from pymobiledevice3.exceptions import AlreadyMountedError, DeveloperDiskImageNotFoundError, NotMountedError, \
     UnsupportedCommandError, NotFoundImageError
 from pymobiledevice3.lockdown import LockdownClient
@@ -128,7 +129,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': 'DeveloperDiskImage mounted successfully',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
     except URLError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
@@ -136,7 +137,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': 'failed to query DeveloperDiskImage versions',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
     except DeveloperDiskImageNotFoundError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
@@ -144,7 +145,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': 'Unable to find the correct DeveloperDiskImage',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
     except AlreadyMountedError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
@@ -152,7 +153,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': 'DeveloperDiskImage already mounted',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
     except NotFoundImageError:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
@@ -160,7 +161,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': 'DeveloperDiskImage not found',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
     except PermissionError as e:
         data = {'cmd': 'mounter_auto_mount',
                 'UDID': f'{service_provider.udid}',
@@ -168,7 +169,7 @@ def mounter_auto_mount(service_provider: LockdownServiceProvider, path: str, xco
                 'msg': f'DeveloperDiskImage could not be saved to Xcode default path ({e.filename}).Please make sure your user has the necessary permissions',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
 
 
 # @mounter.command('query-developer-mode-status', cls=Command)

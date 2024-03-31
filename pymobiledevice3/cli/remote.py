@@ -9,6 +9,7 @@ import sys
 import click
 
 from pymobiledevice3.cli.cli_common import BaseCommand, RSDCommand, print_json, prompt_device_list, sudo_required
+from pymobiledevice3.cli.ktprint import kt_print
 from pymobiledevice3.common import get_home_folder
 from pymobiledevice3.exceptions import NoDeviceConnectedError
 from pymobiledevice3.pair_records import PAIRING_RECORD_EXT, get_remote_pairing_record_filename
@@ -111,7 +112,7 @@ async def tunnel_task(
         'rsd_port': f'{tunnel_result.port}',
         }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
         # if script_mode:
         #     print(f'{tunnel_result.address} {tunnel_result.port}')
         # else:
@@ -142,7 +143,7 @@ async def tunnel_task(
         'rsd_port': f'{tunnel_result.port}',
         }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
 
 def select_device(udid: str) -> RemoteServiceDiscoveryService:
     devices = get_device_list()
@@ -161,14 +162,14 @@ def select_device(udid: str) -> RemoteServiceDiscoveryService:
         else:
             rsd = [device for device in devices if device.udid == udid]
             for device in devices:
-                print(f'start quic tunnel rsd:device uid:{device.udid} pass:{udid}', flush=True)
+                kt_print(f'start quic tunnel rsd:device uid:{device.udid} pass:{udid}')
             if len(rsd) > 0:
                 rsd = rsd[0]
             else:
                 raise NoDeviceConnectedError()
 
     if udid is not None and rsd.udid != udid:
-        print(f'start quic tunnel no device connect rsd uid:{rsd.udid} pass:{udid}', flush=True)
+        kt_print(f'start quic tunnel no device connect rsd uid:{rsd.udid} pass:{udid}')
         raise NoDeviceConnectedError()
     return rsd
 

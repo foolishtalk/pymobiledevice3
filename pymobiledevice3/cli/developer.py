@@ -17,6 +17,7 @@ from packaging.version import Version
 
 import pymobiledevice3
 from pymobiledevice3.cli.cli_common import BASED_INT, Command, RSDCommand, default_json_encoder, print_json, wait_return
+from pymobiledevice3.cli.ktprint import kt_print
 from pymobiledevice3.exceptions import DeviceAlreadyInUseError, DvtDirListError, ExtractingStackshotError, \
     RSDRequiredError, UnrecognizedSelectorError
 from pymobiledevice3.lockdown import LockdownClient
@@ -999,7 +1000,7 @@ def dvt_simulate_location_set(service_provider: LockdownClient, latitude, longit
             coordinate = text.split(',')
             input_latitude = coordinate[0]
             input_longitude = coordinate[1]
-            print("simulate location set", flush=True)
+            kt_print("simulate location set")
             location.set(float(input_latitude), float(input_longitude))
 
 

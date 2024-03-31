@@ -3,13 +3,10 @@ import sys
 import traceback
 import json
 import click
+from pymobiledevice3.cli.ktprint import kt_print
 #  自己加的引用 start
 from Crypto.Cipher import AES
-from binascii import a2b_hex, b2a_hex
-from pymobiledevice3.cli.developer import dvt_simulate_location_set
-from pymobiledevice3.cli.developer import dvt_simulate_location_clear
-from pymobiledevice3.cli.mounter import mounter_auto_mount
-from pymobiledevice3.cli.remote import cli_start_tunnel
+from binascii import a2b_hex
 # 自己加的引用 end
 
 from pymobiledevice3.exceptions import AccessDeniedError, ConnectionFailedToUsbmuxdError, DeveloperModeError, \
@@ -178,7 +175,7 @@ def main() -> None:
                 'msg': 'Failed to start service',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str)
         # logger.error(INVALID_SERVICE_MESSAGE)
     except NoDeviceSelectedError:
         return

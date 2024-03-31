@@ -62,7 +62,6 @@ class RemoteServiceDiscoveryService(LockdownServiceProvider):
         #             'msg': 'Failed to start service',
         #             }
         #     json_str = json.dumps(data)
-        #     print(json_str, flush=True)
         self.lockdown = create_using_remote(
             self.start_lockdown_service('com.apple.mobile.lockdown.remote.untrusted'))
         self.all_values = self.lockdown.all_values

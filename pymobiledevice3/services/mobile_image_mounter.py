@@ -3,7 +3,7 @@ import json
 import plistlib
 from pathlib import Path
 from typing import List, Mapping
-
+from pymobiledevice3.cli.ktprint import kt_print
 from developer_disk_image.repo import DeveloperDiskImageRepository
 from packaging.version import Version
 
@@ -43,7 +43,7 @@ class MobileImageMounterService(LockdownService):
                 'msg': 'DeveloperMode is not enabled',
                 }
         json_str = json.dumps(data)
-        print(json_str, flush=True)
+        kt_print(json_str, flush=True)
 
     def copy_devices(self) -> List[Mapping]:
         """ Copy mounted devices list. """
